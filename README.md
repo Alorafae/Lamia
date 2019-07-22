@@ -11,7 +11,11 @@ Compilation across all four configurations is currently working.
 This is meant to be a base Vulkan engine to build from and be easy to follow.
 
 # License
-Two files (the LamiaGfxUtil files) are under Apache license due to majority of the code coming directly from Valve & LunarG tutorial on Vulkan.
+The two files (the LamiaGfxUtil files) are under Apache License due to majority of the code coming directly from Valve & LunarG tutorial on Vulkan.
+
+Glslang, SPIRV, and Vulkan are also under Apache License and are not modified.
+
+GLM utilizes MIT license.
 
 All other files are and will be MIT license.
 
