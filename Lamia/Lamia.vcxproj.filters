@@ -27,6 +27,15 @@
     <ClCompile Include="src\Graphics\LamiaGfxUtil.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Camera.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Model.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window\LamiaWindow.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\vulkan\vk_icd.h">
@@ -52,6 +61,15 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\LamiaGfxUtil.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Model.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window\LamiaWindow.h">
+      <Filter>Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

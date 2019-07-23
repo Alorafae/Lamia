@@ -36,6 +36,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case WM_PAINT:
     LamiaMain(*info); // game main loop
     return 0;
+  case WM_KEYDOWN:
+    LamiaInput_KEYDOWN(wParam);
+    return 0;
   default:
     break;
   }
@@ -95,7 +98,7 @@ VkResult VK_Create_Window(DeviceInfo &info)
     exit(1);
   }
   SetWindowLongPtr(info.window, GWLP_USERDATA, (LONG_PTR)&info);
-
+  
   return VK_SUCCESS;
 }
 

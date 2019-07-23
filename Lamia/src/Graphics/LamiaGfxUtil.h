@@ -20,11 +20,7 @@
 
 #pragma once
 
-#include <Windows.h>
-#pragma comment(linker, "/subsystem:console")
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
+#include "..\Window\LamiaWindow.h"
 
 
 #include <stdio.h>
@@ -255,7 +251,7 @@ VkResult VK_Enumerate_Device(DeviceInfo &info, uint32_t gpu_count = 1); // done
 
 
 
-//VkResult VK_Create_Window(DeviceInfo &info); // done
+VkResult VK_Create_Window(DeviceInfo &info); // done
 
 
 
