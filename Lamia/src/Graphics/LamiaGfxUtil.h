@@ -59,6 +59,9 @@
 /* Amount of time, in nanoseconds, to wait for a command buffer to complete */
 #define FENCE_TIMEOUT 100000000
 
+#define DEFAULT_HEIGHT 720
+#define DEFAULT_WIDTH 1280
+
 static const char *vShdTxt =
 "#version 400\n"
 "#extension GL_ARB_separate_shader_objects : enable\n"

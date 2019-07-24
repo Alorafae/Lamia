@@ -299,8 +299,8 @@ EShLanguage FindLanguage(const VkShaderStageFlagBits shader_type)
 
 VkResult VK_Start_Sequence(DeviceInfo& info)
 {
-  info.width = 1280;
-  info.height = 720;
+  info.width = DEFAULT_WIDTH;
+  info.height = DEFAULT_HEIGHT;
 
   VK_Global_Layer_Props(info);
   VK_Instance_Ext_Names(info);
@@ -964,6 +964,7 @@ VkResult VK_Uniform_Buffer(DeviceInfo & info)
   );
 
   info.Model = glm::mat4(1.0f);
+
   // Vulkan clip space has inverted Y and half Z.
   info.Clip = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 1.0f);
 
