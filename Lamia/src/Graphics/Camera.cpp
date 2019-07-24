@@ -49,6 +49,10 @@ Camera::~Camera()
 {
 }
 
+void Camera::Update(float dt)
+{
+}
+
 void Camera::BindUBO(DeviceInfo &info, glm::mat4 &model)
 {
   // model will change for every object

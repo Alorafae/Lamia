@@ -19,6 +19,7 @@
  */
 
 #include "LamiaGfxUtil.h"
+#include "Camera.h"
 
  // MS-Windows event handling function:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -104,6 +105,12 @@ VkResult VK_Create_Window(DeviceInfo &info)
 
 void LamiaMain(DeviceInfo &info)
 {
+  // at this point all the startup has happened
+  // vulkan, shaders and everything is initialized & compiled and ready to go
+  Camera cam;
+
+  glm::mat4 model = glm::mat4(1.0f);
+  cam.BindUBO(info, model);
 
   //input
 
@@ -112,8 +119,7 @@ void LamiaMain(DeviceInfo &info)
   //sound
 
   //render
-
-
+  
   VK_RenderCube(info);
 }
 

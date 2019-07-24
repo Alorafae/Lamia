@@ -22,6 +22,7 @@ class Camera
     Camera(DeviceInfo &di);
     ~Camera();
 
+    void Update(float dt);
     void BindUBO(DeviceInfo &info, glm::mat4 &model);
 
     glm::vec3 cPos = glm::vec3(0.0f);
