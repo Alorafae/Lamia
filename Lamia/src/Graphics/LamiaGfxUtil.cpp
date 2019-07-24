@@ -104,6 +104,16 @@ VkResult VK_Create_Window(DeviceInfo &info)
 
 void LamiaMain(DeviceInfo &info)
 {
+
+  //input
+
+  //physics
+
+  //sound
+
+  //render
+
+
   VK_RenderCube(info);
 }
 
