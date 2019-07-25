@@ -25,10 +25,16 @@ class Camera
     void Update(float dt);
     void BindUBO(DeviceInfo &info, glm::mat4 &model);
 
+    void SetViewport(DeviceInfo &di);
+    void SetScissor(DeviceInfo &di);
+
     glm::vec3 cPos = glm::vec3(0.0f);
     
   private:
     CameraUBO cUBO;
+
+    VkViewport viewport;
+    VkRect2D scissor;
 
     // uniform data
     VkBuffer UBOBuffer;

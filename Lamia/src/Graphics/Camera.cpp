@@ -53,7 +53,7 @@ void Camera::Update(float dt)
 {
 }
 
-void Camera::BindUBO(DeviceInfo &info, glm::mat4 &model)
+void Camera::BindUBO(DeviceInfo &di, glm::mat4 &model)
 {
   // model will change for every object
   cUBO.model = model;
@@ -67,11 +67,11 @@ void Camera::BindUBO(DeviceInfo &info, glm::mat4 &model)
   bi.pQueueFamilyIndices = NULL;
   bi.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
   bi.flags = 0;
-  VkResult U_ASSERT_ONLY res = vkCreateBuffer(info.device, &bi, NULL, &UBOBuffer);
+  VkResult U_ASSERT_ONLY res = vkCreateBuffer(di.device, &bi, NULL, &UBOBuffer);
   assert(res == VK_SUCCESS);
 
   VkMemoryRequirements mr;
-  vkGetBufferMemoryRequirements(info.device, UBOBuffer, &mr);
+  vkGetBufferMemoryRequirements(di.device, UBOBuffer, &mr);
 
   VkMemoryAllocateInfo ai = {};
   ai.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -79,27 +79,47 @@ void Camera::BindUBO(DeviceInfo &info, glm::mat4 &model)
   ai.memoryTypeIndex = 0;
 
   ai.allocationSize = mr.size;
-  bool U_ASSERT_ONLY pass = memory_type_from_properties(info, mr.memoryTypeBits,
+  bool U_ASSERT_ONLY pass = memory_type_from_properties(di, mr.memoryTypeBits,
     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
     &ai.memoryTypeIndex);
   assert(pass && "No mappable, coherent memory");
 
-  res = vkAllocateMemory(info.device, &ai, NULL, &(VKD_Mem));
+  res = vkAllocateMemory(di.device, &ai, NULL, &(VKD_Mem));
   assert(res == VK_SUCCESS);
 
   // map memory may need to be different or not needed
   uint8_t *pData;
-  res = vkMapMemory(info.device, VKD_Mem, 0, mr.size, 0, (void **)&pData);
+  res = vkMapMemory(di.device, VKD_Mem, 0, mr.size, 0, (void **)&pData);
   assert(res == VK_SUCCESS);
 
   memcpy(pData, &cUBO, sizeof(cUBO));
 
-  vkUnmapMemory(info.device, VKD_Mem);
+  vkUnmapMemory(di.device, VKD_Mem);
 
-  res = vkBindBufferMemory(info.device, UBOBuffer, VKD_Mem, 0);
+  res = vkBindBufferMemory(di.device, UBOBuffer, VKD_Mem, 0);
   assert(res == VK_SUCCESS);
 
   UBufferInfo.buffer = UBOBuffer;
   UBufferInfo.offset = 0;
   UBufferInfo.range = sizeof(cUBO);
+}
+
+void Camera::SetViewport(DeviceInfo & di)
+{
+  viewport.height = (float)di.height;
+  viewport.width = (float)di.width;
+  viewport.minDepth = (float)0.0f;
+  viewport.maxDepth = (float)1.0f;
+  viewport.x = 0;
+  viewport.y = 0;
+  vkCmdSetViewport(di.cmd, 0, NUM_VIEWPORTS, &viewport);
+}
+
+void Camera::SetScissor(DeviceInfo & di)
+{
+  scissor.extent.width = di.width;
+  scissor.extent.height = di.height;
+  scissor.offset.x = 0;
+  scissor.offset.y = 0;
+  vkCmdSetScissor(di.cmd, 0, NUM_SCISSORS, &scissor);
 }

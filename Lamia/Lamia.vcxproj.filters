@@ -36,6 +36,9 @@
     <ClCompile Include="src\Window\LamiaWindow.cpp">
       <Filter>Window</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Shader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\vulkan\vk_icd.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="src\Window\LamiaWindow.h">
       <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shader.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

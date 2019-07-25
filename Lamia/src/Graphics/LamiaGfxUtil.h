@@ -47,7 +47,7 @@
 #include "..\..\Include\SPIRV\GlslangToSpv.h"
 
 #define MAX_APP_NAME_LEN 80
-#define FRAME_TIME 0.0069444f
+#define FRAME_TIME 0.0069444f // targeting 144 fps across all systems
 #define NUM_SAMPLES VK_SAMPLE_COUNT_1_BIT
 #define NUM_DESCRIPTOR_SETS 1
 /* Number of viewports and number of scissors have to be the same */
