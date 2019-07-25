@@ -77,6 +77,11 @@ VkResult VK_Create_Window(DeviceInfo &info)
     fflush(stdout);
     exit(1);
   }
+
+  // we use these 2 values to center the window on the users screen
+  int centerX = (GetSystemMetrics(SM_CXSCREEN) - info.width) / 2;
+  int centerY = (GetSystemMetrics(SM_CYSCREEN) - info.height) / 2;
+
   // Create window with the registered class:
   RECT wr = { 0, 0, info.width, info.height };
   AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
@@ -85,7 +90,7 @@ VkResult VK_Create_Window(DeviceInfo &info)
     (LPCWSTR)info.name,             // app name
     WS_OVERLAPPEDWINDOW |  // window style
     WS_VISIBLE | WS_SYSMENU,
-    100, 100,            // x/y coords
+    centerX, centerY,            // x/y coords
     wr.right - wr.left,  // width
     wr.bottom - wr.top,  // height
     NULL,                // handle to parent
@@ -279,9 +284,9 @@ VkResult VK_Create_Instance(DeviceInfo &info)
   inst_info.pNext = NULL;
   inst_info.flags = 0;
   inst_info.pApplicationInfo = &app_info;
-  inst_info.enabledLayerCount = info.instance_layer_names.size();
+  inst_info.enabledLayerCount = (uint32_t)info.instance_layer_names.size();
   inst_info.ppEnabledLayerNames = info.instance_layer_names.size() ? info.instance_layer_names.data() : NULL; // change for readability
-  inst_info.enabledExtensionCount = info.instance_extension_names.size();
+  inst_info.enabledExtensionCount = (uint32_t)info.instance_extension_names.size();
   inst_info.ppEnabledExtensionNames = info.instance_extension_names.data();
 
   VkResult res = vkCreateInstance(&inst_info, NULL, &info.inst);
@@ -421,7 +426,7 @@ VkResult VK_Create_Device(DeviceInfo &info)
   device_info.pNext = NULL;
   device_info.queueCreateInfoCount = 1;
   device_info.pQueueCreateInfos = &queue_info;
-  device_info.enabledExtensionCount = info.device_extension_names.size();
+  device_info.enabledExtensionCount = (uint32_t)info.device_extension_names.size();
   device_info.ppEnabledExtensionNames = device_info.enabledExtensionCount ? info.device_extension_names.data() : NULL;
   device_info.pEnabledFeatures = NULL;
 

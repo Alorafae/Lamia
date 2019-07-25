@@ -39,6 +39,9 @@
     <ClCompile Include="src\Graphics\Shader.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Pipeline.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\vulkan\vk_icd.h">
@@ -75,6 +78,9 @@
       <Filter>Window</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\Shader.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pipeline.h">
       <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>

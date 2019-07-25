@@ -128,6 +128,7 @@
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\LamiaGfxUtil.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
+    <ClCompile Include="src\Graphics\Pipeline.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Window\LamiaWindow.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\LamiaGfxUtil.h" />
     <ClInclude Include="src\Graphics\Model.h" />
+    <ClInclude Include="src\Graphics\Pipeline.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Window\LamiaWindow.h" />
   </ItemGroup>

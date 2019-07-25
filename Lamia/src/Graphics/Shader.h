@@ -26,5 +26,6 @@ class Shader
   private:
     const char* vertName;
     const char* fragName;
+    bool fileload = false;
     VkPipelineShaderStageCreateInfo ShdTech[2];
 };
