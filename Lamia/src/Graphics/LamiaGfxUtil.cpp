@@ -21,6 +21,8 @@
 #include "LamiaGfxUtil.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Pipeline.h"
+#include "Model.h"
 
  // MS-Windows event handling function:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -109,14 +111,39 @@ VkResult VK_Create_Window(DeviceInfo &info)
   return VK_SUCCESS;
 }
 
+
+// testing global vars to make sure pipeline, shaders, model, camera work as intended
+
+static Camera g_Camera;
+static Model g_Cube;
+static Shader g_ShdTech = Shader(vShdTxt2, fShdTxt2);
+static LamiaPipeline g_Pipeline;
+
+void CustomPipeInit(DeviceInfo &di)
+{
+  // init our camera
+  g_Camera.cPos = glm::vec3(-5, 3, -10);
+  g_Camera.SetScissor(di);
+  g_Camera.SetViewport(di);
+  glm::mat4 model = glm::mat4(1.0f);
+  g_Camera.BindUBO(di, model);
+
+  // init our model
+  g_Cube.CreateVertexBuffer(di, g_vb_solid_face_colors_Data, sizeof(g_vb_solid_face_colors_Data), sizeof(g_vb_solid_face_colors_Data[0]), false);
+
+  // init our shaders
+  g_ShdTech.CreateShaderStages(di);
+
+  // init our pipeline
+
+}
+
+// above function & globals to be removed after testing
+
 void LamiaMain(DeviceInfo &info)
 {
   // at this point all the startup has happened
   // vulkan, shaders and everything is initialized & compiled and ready to go
-  Camera cam;
-
-  glm::mat4 model = glm::mat4(1.0f);
-  cam.BindUBO(info, model);
 
   //pipelines control the state(s) of rendering, including which shaders are used, etc
 
@@ -180,6 +207,8 @@ VkResult VK_Start_Sequence(DeviceInfo& info)
   VK_Pipeline(info,  true);
 
   // COOL ready to start rendering!!!
+
+  CustomPipeInit(info);
 
   return VK_SUCCESS;
 }

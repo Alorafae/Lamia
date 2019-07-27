@@ -211,9 +211,20 @@ VkResult Shader::CreateShaderStages(DeviceInfo &di)
   if (!(vertName || fragName))
     return VK_SUCCESS;
 
-  //loadfromfile into
   const char* vertShaderText = NULL;
   const char* fragShaderText = NULL;
+
+  //loadfromfile into
+  if (fileload)
+  {
+    //const char* vertShaderText = NULL;
+    //const char* fragShaderText = NULL;
+  }
+  else
+  {
+    vertShaderText = vertName;
+    fragShaderText = fragName;
+  }
 
   glslang::InitializeProcess();
 
