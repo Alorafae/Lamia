@@ -137,6 +137,7 @@ VkResult VK_Start_Sequence(DeviceInfo& info)
   info.width = DEFAULT_WIDTH;
   info.height = DEFAULT_HEIGHT;
 
+  // init vulkan
   VK_Global_Layer_Props(info);
   VK_Instance_Ext_Names(info);
   VK_Device_Ext_Names(info);
@@ -146,21 +147,28 @@ VkResult VK_Start_Sequence(DeviceInfo& info)
   VK_Swapchain_Ext(info);
   VK_Create_Device(info);
 
+  // per framebuffer later on
   VK_Cmd_Pool(info);
   VK_Cmd_Buffer(info);
 
+  // call before writing to cmd buffer
   //VK_Exec_Cmd_Buffer(info);
 
+  // init vulkan
   VK_Device_Queue(info);
   VK_Swapchain(info);
-
   VK_Depth_Buffer(info);
+
+
   VK_Uniform_Buffer(info);
   VK_Descriptor_Pipeline_Layouts(info, false);
+
+  // init vulkan
   VK_Renderpass(info, true);
 
   VK_Shaders(info, vShdTxt, fShdTxt);
 
+  // init vulkan
   VK_Framebuffers(info, true);
 
   VK_VertexBuffer(info, g_vb_solid_face_colors_Data,  sizeof(g_vb_solid_face_colors_Data),  sizeof(g_vb_solid_face_colors_Data[0]), false);

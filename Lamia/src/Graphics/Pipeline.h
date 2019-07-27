@@ -3,6 +3,12 @@
 
 #include "LamiaGfxUtil.h"
 
+struct VertexBufferInfo
+{
+  VkVertexInputBindingDescription viBinds;
+  VkVertexInputAttributeDescription viAttribs[2];
+};
+
 class LamiaPipeline
 {
   public:
@@ -11,11 +17,11 @@ class LamiaPipeline
 
     VkResult CreateDescriptorPipelineLayout(DeviceInfo &di, bool textured, VkDescriptorSetLayoutCreateFlags descSetLayoutCreateFlags = 0);
     VkResult CreateDescriptorPool(DeviceInfo &di, bool textured);
-    VkResult CreateDescriptorSet(DeviceInfo &di, bool textured);
+    VkResult CreateDescriptorSet(DeviceInfo &di, VkDescriptorBufferInfo bufInfo, VkDescriptorImageInfo imgInfo, bool textured);
 
     VkResult CreatePipelineCache(DeviceInfo &di);
 
-    VkResult CreatePipeline(DeviceInfo &di, VkBool32 depth, VkBool32 vertexInput, bool textured);
+    VkResult CreatePipeline(DeviceInfo &di, VkBool32 depth, VkBool32 vertexInput, VertexBufferInfo &VBI, VkPipelineShaderStageCreateInfo *ShdTechStages, bool textured);
 
   private:
     VkPipelineLayout pipeLayout;
