@@ -22,9 +22,14 @@ class Model
   public:
     Model();
     ~Model();
+
+    VkResult CreateVertexBuffer(DeviceInfo &di, const void *vertexData, uint32_t dataSize, uint32_t dataStride, bool textured);
+
   private: //unsure if these will stay private
-    VkVertexInputBindingDescription vi_binding;
-    VkVertexInputAttributeDescription vi_attribs[2];
+    VkVertexInputBindingDescription viBinds;
+    VkVertexInputAttributeDescription viAttribs[2];
+
+    MVertexData vData;
 };
 
 
