@@ -71,3 +71,13 @@ VkResult Model::CreateVertexBuffer(DeviceInfo & di, const void * vertexData, uin
 
   return res;
 }
+
+VkVertexInputBindingDescription& Model::GetVBinds(void)
+{
+  return viBinds;
+}
+
+VkVertexInputAttributeDescription& Model::GetVAtrribs(unsigned index)
+{
+  return viAttribs[index];
+}

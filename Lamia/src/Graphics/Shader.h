@@ -52,6 +52,8 @@ class Shader
 
     VkResult CreateShaderStages(DeviceInfo &di);
 
+    VkPipelineShaderStageCreateInfo* GetShaderStages(void);
+
   private:
     const char* vertName;
     const char* fragName;

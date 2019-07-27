@@ -279,3 +279,8 @@ VkResult Shader::CreateShaderStages(DeviceInfo &di)
 
   return res;
 }
+
+VkPipelineShaderStageCreateInfo * Shader::GetShaderStages(void)
+{
+  return ShdTech;
+}

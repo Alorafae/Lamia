@@ -28,6 +28,8 @@ class Camera
     void SetViewport(DeviceInfo &di);
     void SetScissor(DeviceInfo &di);
 
+    VkDescriptorBufferInfo GetCamUBOInfo(void);
+
     glm::vec3 cPos = glm::vec3(0.0f);
     
   private:

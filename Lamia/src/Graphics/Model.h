@@ -25,6 +25,9 @@ class Model
 
     VkResult CreateVertexBuffer(DeviceInfo &di, const void *vertexData, uint32_t dataSize, uint32_t dataStride, bool textured);
 
+    VkVertexInputBindingDescription& GetVBinds(void);
+    VkVertexInputAttributeDescription& GetVAtrribs(unsigned index);
+
   private: //unsure if these will stay private
     VkVertexInputBindingDescription viBinds;
     VkVertexInputAttributeDescription viAttribs[2];

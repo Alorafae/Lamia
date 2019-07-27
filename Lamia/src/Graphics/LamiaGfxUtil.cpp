@@ -134,8 +134,22 @@ void CustomPipeInit(DeviceInfo &di)
   // init our shaders
   g_ShdTech.CreateShaderStages(di);
 
-  // init our pipeline
 
+  VkDescriptorImageInfo imgInfo = VkDescriptorImageInfo();
+  
+  // init our pipeline
+  g_Pipeline.CreateDescriptorPipelineLayout(di, false);
+  g_Pipeline.CreateDescriptorPool(di, false);
+  g_Pipeline.CreateDescriptorSet(di, g_Camera.GetCamUBOInfo(), imgInfo, false);
+
+  g_Pipeline.CreatePipelineCache(di);
+
+  // dont like how this is set up & sent to pipeline creation
+  VertexBufferInfo VBI;
+  VBI.viBinds = g_Cube.GetVBinds();
+  VBI.viAttribs[0] = g_Cube.GetVAtrribs(0);
+  VBI.viAttribs[1] = g_Cube.GetVAtrribs(1);
+  g_Pipeline.CreatePipeline(di, true, true, VBI, g_ShdTech.GetShaderStages(), false);
 }
 
 // above function & globals to be removed after testing

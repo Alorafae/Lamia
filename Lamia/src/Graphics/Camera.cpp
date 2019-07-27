@@ -123,3 +123,8 @@ void Camera::SetScissor(DeviceInfo & di)
   scissor.offset.y = 0;
   vkCmdSetScissor(di.cmd, 0, NUM_SCISSORS, &scissor);
 }
+
+VkDescriptorBufferInfo Camera::GetCamUBOInfo(void)
+{
+  return UBufferInfo;
+}
