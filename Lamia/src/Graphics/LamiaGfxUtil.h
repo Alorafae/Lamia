@@ -186,31 +186,9 @@ struct DeviceInfo
   VkDeviceMemory stagingMemory;
   VkImage stagingImage;
 
-  struct {
-    VkBuffer buf;
-    VkDeviceMemory mem;
-    VkDescriptorBufferInfo buffer_info;
-  } vertex_buffer;
-  VkVertexInputBindingDescription vi_binding;
-  VkVertexInputAttributeDescription vi_attribs[2];
-
-  glm::mat4 Projection;
-  glm::mat4 View;
-  glm::mat4 Model;
-  glm::mat4 Clip;
-  glm::mat4 MVP;
-
   VkCommandBuffer cmd; // Buffer for initialization commands
-  VkPipelineLayout pipeline_layout;
-  std::vector<VkDescriptorSetLayout> desc_layout;
-  VkPipelineCache pipelineCache;
+
   VkRenderPass render_pass;
-  VkPipeline pipeline;
-
-  VkPipelineShaderStageCreateInfo shaderStages[2];
-
-  VkDescriptorPool desc_pool;
-  std::vector<VkDescriptorSet> desc_set;
 
   PFN_vkCreateDebugReportCallbackEXT dbgCreateDebugReportCallback;
   PFN_vkDestroyDebugReportCallbackEXT dbgDestroyDebugReportCallback;
@@ -219,30 +197,14 @@ struct DeviceInfo
 
   uint32_t current_buffer;
   uint32_t queue_family_count;
-
-  VkViewport viewport;
-  VkRect2D scissor;
 };
 
 void LamiaMain(DeviceInfo &info);
 
-
-
-
-// utility functions
-bool memory_type_from_properties(DeviceInfo &info, uint32_t typeBits, VkFlags requirements_mask, uint32_t *typeIndex);
-
-bool GLSLtoSPV(const VkShaderStageFlagBits shader_type, const char *pshader, std::vector<unsigned int> &spirv);
-
-
-EShLanguage FindLanguage(const VkShaderStageFlagBits shader_type);
-void VK_Shader_Init_Resources(TBuiltInResource &Resources);
+bool memory_type_from_properties(DeviceInfo & info, uint32_t typeBits, VkFlags requirements_mask, uint32_t * typeIndex);
 
 // startup functions
 VkResult VK_Start_Sequence(DeviceInfo &info);
-
-
-
 
 VkResult VK_Global_Ext_Props(layer_properties &layer_props); // done
 
@@ -252,11 +214,7 @@ VkResult VK_Device_Ext_Names(DeviceInfo &info); // done
 VkResult VK_Create_Instance(DeviceInfo &info); // done
 VkResult VK_Enumerate_Device(DeviceInfo &info, uint32_t gpu_count = 1); // done
 
-
-
 VkResult VK_Create_Window(DeviceInfo &info); // done
-
-
 
 VkResult VK_Swapchain_Ext(DeviceInfo &info); // done
 VkResult VK_Create_Device(DeviceInfo &info); // done
@@ -267,39 +225,10 @@ VkResult VK_Exec_Cmd_Buffer(DeviceInfo &info);
 VkResult VK_Device_Queue(DeviceInfo &info);
 VkResult VK_Swapchain(DeviceInfo &info, VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
 VkResult VK_Depth_Buffer(DeviceInfo &info); // done
-VkResult VK_Uniform_Buffer(DeviceInfo &info); //done
 
-VkResult VK_Descriptor_Pipeline_Layouts(DeviceInfo &info, bool use_texture, VkDescriptorSetLayoutCreateFlags descSetLayoutCreateFlags = 0);
 VkResult VK_Renderpass(DeviceInfo &info, bool include_depth, bool clear = true, VkImageLayout finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 
-// glslang
-VkResult VK_Shaders(DeviceInfo &info, const char *vertShaderText, const char *fragShaderText);
-
 VkResult VK_Framebuffers(DeviceInfo &info, bool IncludeDepth);
-
-VkResult VK_VertexBuffer(DeviceInfo &info, const void *vertexData, uint32_t dataSize, uint32_t dataStride, bool IsTextured);
-
-VkResult VK_DescriptorPool(DeviceInfo &info, bool IsTextured);
-VkResult VK_DescriptorSet(DeviceInfo &info, bool IsTextured);
-
-VkResult VK_PipelineCache(DeviceInfo &info);
-VkResult VK_Pipeline(DeviceInfo &info, VkBool32 include_depth, VkBool32 include_vi = true);
-
-
-
-// end of startup functions
-
-// render?
-void VK_Viewports(DeviceInfo &info);
-void VK_Scissors(DeviceInfo &info);
-VkResult VK_RenderCube(DeviceInfo &info);
-
-// end render
-
-// shutdown
-
-VkResult VK_Destroy_Pipeline(DeviceInfo &info);
-
 
 
 VkResult VK_Shutdown_Sequence(DeviceInfo& info);

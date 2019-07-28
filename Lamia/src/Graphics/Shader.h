@@ -37,7 +37,6 @@ static const char *fShdTxt2 =
 "}\n";
 
 // shader utilities
-bool memory_type_from_properties(DeviceInfo & info, uint32_t typeBits, VkFlags requirements_mask, uint32_t * typeIndex);
 bool GLSLtoSPV(const VkShaderStageFlagBits shader_type, const char *pshader, std::vector<unsigned int> &spirv);
 void VK_Shader_Init_Resources(TBuiltInResource &Resources);
 EShLanguage FindLanguage(const VkShaderStageFlagBits shader_type);
