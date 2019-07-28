@@ -164,11 +164,11 @@ void LamiaMain(DeviceInfo &info)
   //pipelines control the state(s) of rendering, including which shaders are used, etc
 
   //input
-
+  g_Camera.Update(info, FRAME_TIME);
   //physics
 
   //sound
-
+  
   //render
   g_Pipeline.RenderTest(info, g_Cube.GetVBuffer(), g_Camera);
   //VK_RenderCube(info);

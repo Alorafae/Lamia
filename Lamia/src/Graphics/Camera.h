@@ -23,7 +23,7 @@ class Camera
     Camera(DeviceInfo &di);
     ~Camera();
 
-    void Update(float dt);
+    void Update(DeviceInfo &di, float dt);
     void BindUBO(DeviceInfo &info, glm::mat4 &model);
 
     void SetViewport(DeviceInfo &di);

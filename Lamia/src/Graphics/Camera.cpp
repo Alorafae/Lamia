@@ -50,8 +50,28 @@ Camera::~Camera()
 {
 }
 
-void Camera::Update(float dt)
+void Camera::Update(DeviceInfo &di, float dt)
 {
+  VkResult U_ASSERT_ONLY res;
+
+  cUBO.model = glm::rotate(cUBO.model, glm::radians(20.f * dt), glm::vec3(1, 1, 1));
+  //cUBO.model = glm::translate(cUBO.model, glm::vec3(0, 1, 0) * dt);
+  
+  cUBO.mvp = cUBO.clip * cUBO.proj * cUBO.view * cUBO.model;
+
+  VkMemoryRequirements mr;
+  vkGetBufferMemoryRequirements(di.device, UBOBuffer, &mr);
+  // map memory may need to be different or not needed
+  uint8_t *pData;
+  res = vkMapMemory(di.device, VKD_Mem, 0, mr.size, 0, (void **)&pData);
+  assert(res == VK_SUCCESS);
+
+  memcpy(pData, &cUBO, sizeof(cUBO));
+
+  vkUnmapMemory(di.device, VKD_Mem);
+
+  res = vkBindBufferMemory(di.device, UBOBuffer, VKD_Mem, 0);
+  assert(res == VK_SUCCESS);
 }
 
 void Camera::BindUBO(DeviceInfo &di, glm::mat4 &model)
