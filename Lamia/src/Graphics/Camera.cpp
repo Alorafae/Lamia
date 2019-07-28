@@ -54,7 +54,7 @@ void Camera::Update(DeviceInfo &di, float dt)
 {
   VkResult U_ASSERT_ONLY res;
 
-  cUBO.model = glm::rotate(cUBO.model, glm::radians(20.f * dt), glm::vec3(1, 1, 1));
+  cUBO.model = glm::rotate(cUBO.model, glm::radians(50.f * dt), glm::vec3(1, 1, 1));
   //cUBO.model = glm::translate(cUBO.model, glm::vec3(0, 1, 0) * dt);
   
   cUBO.mvp = cUBO.clip * cUBO.proj * cUBO.view * cUBO.model;

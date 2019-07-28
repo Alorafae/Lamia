@@ -295,10 +295,10 @@ void LamiaPipeline::RenderTest(DeviceInfo & di, VkBuffer vBuff, Camera &cam)
   VkResult U_ASSERT_ONLY res;
 
   VkClearValue clear_values[2];
-  clear_values[0].color.float32[0] = 0.2f;
-  clear_values[0].color.float32[1] = 0.2f;
-  clear_values[0].color.float32[2] = 0.2f;
-  clear_values[0].color.float32[3] = 0.2f;
+  clear_values[0].color.float32[0] = 0.0f;
+  clear_values[0].color.float32[1] = 0.0f;
+  clear_values[0].color.float32[2] = 0.0f;
+  clear_values[0].color.float32[3] = 0.0f;
   clear_values[1].depthStencil.depth = 1.0f;
   clear_values[1].depthStencil.stencil = 0;
 
