@@ -16,13 +16,14 @@ static const char *vShdTxt2 =
 "    mat4 proj;\n"
 "    mat4 view;\n"
 "    mat4 model;\n"
+"    mat4 mvp;\n"
 "} myBufferVals;\n"
 "layout (location = 0) in vec4 pos;\n"
 "layout (location = 1) in vec4 inColor;\n"
 "layout (location = 0) out vec4 outColor;\n"
 "void main() {\n"
 "   outColor = inColor;\n"
-"   gl_Position = myBufferVals.clip * myBufferVals.proj * myBufferVals.view * myBufferVals.model * pos;\n"
+"   gl_Position = myBufferVals.mvp * pos;\n"
 "}\n";
 
 static const char *fShdTxt2 =

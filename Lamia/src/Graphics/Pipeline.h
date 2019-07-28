@@ -2,6 +2,7 @@
 #pragma once
 
 #include "LamiaGfxUtil.h"
+#include "Camera.h"
 
 struct VertexBufferInfo
 {
@@ -22,6 +23,8 @@ class LamiaPipeline
     VkResult CreatePipelineCache(DeviceInfo &di);
 
     VkResult CreatePipeline(DeviceInfo &di, VkBool32 depth, VkBool32 vertexInput, VertexBufferInfo &VBI, VkPipelineShaderStageCreateInfo *ShdTechStages, bool textured);
+
+    void RenderTest(DeviceInfo &di, VkBuffer vBuff, Camera &cam);
 
   private:
     VkPipelineLayout pipeLayout;

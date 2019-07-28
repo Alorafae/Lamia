@@ -2,6 +2,7 @@
 #pragma once
 
 #include "LamiaGfxUtil.h"
+#include "Pipeline.h"
 
 struct MUniformData
 {
@@ -27,6 +28,7 @@ class Model
 
     VkVertexInputBindingDescription& GetVBinds(void);
     VkVertexInputAttributeDescription& GetVAtrribs(unsigned index);
+    VkBuffer GetVBuffer(void);
 
   private: //unsure if these will stay private
     VkVertexInputBindingDescription viBinds;

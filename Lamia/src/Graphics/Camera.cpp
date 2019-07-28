@@ -16,11 +16,12 @@ Camera::Camera()
     glm::vec3(0, -1, 0)     // Head is up (set to 0,-1,0 to look upside-down)
   );
 
-  //di.Model = glm::mat4(1.0f);
+  glm::mat4 model = glm::mat4(1.0f);
   // Vulkan clip space has inverted Y and half Z.
   cUBO.clip = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 1.0f);
 
   //di.MVP = this->clip * di.Projection * di.View * di.Model;
+  TestMVP = cUBO.clip * cUBO.proj * cUBO.view * model;
 }
 
 Camera::Camera(DeviceInfo &di)
@@ -57,6 +58,9 @@ void Camera::BindUBO(DeviceInfo &di, glm::mat4 &model)
 {
   // model will change for every object
   cUBO.model = model;
+  
+  TestMVP *= model;
+  cUBO.mvp = TestMVP;
 
   VkBufferCreateInfo bi = {};
   bi.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;

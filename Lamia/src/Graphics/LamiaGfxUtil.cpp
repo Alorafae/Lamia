@@ -128,11 +128,13 @@ void CustomPipeInit(DeviceInfo &di)
   glm::mat4 model = glm::mat4(1.0f);
   g_Camera.BindUBO(di, model);
 
-  // init our model
-  g_Cube.CreateVertexBuffer(di, g_vb_solid_face_colors_Data, sizeof(g_vb_solid_face_colors_Data), sizeof(g_vb_solid_face_colors_Data[0]), false);
 
   // init our shaders
   g_ShdTech.CreateShaderStages(di);
+
+
+  // init our model
+  g_Cube.CreateVertexBuffer(di, g_vb_solid_face_colors_Data, sizeof(g_vb_solid_face_colors_Data), sizeof(g_vb_solid_face_colors_Data[0]), false);
 
 
   VkDescriptorImageInfo imgInfo = VkDescriptorImageInfo();
@@ -168,8 +170,8 @@ void LamiaMain(DeviceInfo &info)
   //sound
 
   //render
-  
-  VK_RenderCube(info);
+  g_Pipeline.RenderTest(info, g_Cube.GetVBuffer(), g_Camera);
+  //VK_RenderCube(info);
 }
 
 
@@ -213,10 +215,8 @@ VkResult VK_Start_Sequence(DeviceInfo& info)
   VK_Framebuffers(info, true);
 
   VK_VertexBuffer(info, g_vb_solid_face_colors_Data,  sizeof(g_vb_solid_face_colors_Data),  sizeof(g_vb_solid_face_colors_Data[0]), false);
-
   VK_DescriptorPool(info, false);
   VK_DescriptorSet(info, false);
-
   VK_PipelineCache(info);
   VK_Pipeline(info,  true);
 

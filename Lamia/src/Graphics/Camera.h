@@ -13,6 +13,7 @@ struct CameraUBO
   glm::mat4 proj;
   glm::mat4 view;
   glm::mat4 model;
+  glm::mat4 mvp;
 };
 
 class Camera
@@ -31,6 +32,8 @@ class Camera
     VkDescriptorBufferInfo GetCamUBOInfo(void);
 
     glm::vec3 cPos = glm::vec3(0.0f);
+
+    glm::mat4 TestMVP;
     
   private:
     CameraUBO cUBO;

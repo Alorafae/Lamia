@@ -81,3 +81,8 @@ VkVertexInputAttributeDescription& Model::GetVAtrribs(unsigned index)
 {
   return viAttribs[index];
 }
+
+VkBuffer Model::GetVBuffer(void)
+{
+  return vData.buf;
+}
