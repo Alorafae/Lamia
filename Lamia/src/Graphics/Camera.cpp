@@ -50,14 +50,17 @@ Camera::~Camera()
 {
 }
 
-void Camera::Update(DeviceInfo &di, float dt)
+void Camera::UpdateUniform(DeviceInfo &di, float dt, glm::mat4 model)
 {
   VkResult U_ASSERT_ONLY res;
 
-  cUBO.model = glm::rotate(cUBO.model, glm::radians(50.f * dt), glm::vec3(1, 1, 1));
+  // put this in Model::Update()
+  // then pass the model's mat4 to the camera when updating uniform
+  // the model will have it's internal position matrix
+  //cUBO.model = glm::rotate(cUBO.model, glm::radians(50.f * dt), glm::vec3(1, 1, 1));
   //cUBO.model = glm::translate(cUBO.model, glm::vec3(0, 1, 0) * dt);
   
-  cUBO.mvp = cUBO.clip * cUBO.proj * cUBO.view * cUBO.model;
+  cUBO.mvp = cUBO.clip * cUBO.proj * cUBO.view * model;
 
   VkMemoryRequirements mr;
   vkGetBufferMemoryRequirements(di.device, UBOBuffer, &mr);

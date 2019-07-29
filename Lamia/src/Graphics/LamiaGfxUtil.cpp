@@ -119,6 +119,8 @@ static Model g_Cube;
 static Shader g_ShdTech = Shader(vShdTxt2, fShdTxt2);
 static LamiaPipeline g_Pipeline;
 
+static Model g_OtherCube;
+
 void CustomPipeInit(DeviceInfo &di)
 {
   // init our camera
@@ -135,6 +137,18 @@ void CustomPipeInit(DeviceInfo &di)
 
   // init our model
   g_Cube.CreateVertexBuffer(di, g_vb_solid_face_colors_Data, sizeof(g_vb_solid_face_colors_Data), sizeof(g_vb_solid_face_colors_Data[0]), false);
+  g_Cube.pos = glm::vec3(0.0f);
+  g_Cube.scale = glm::vec3(1.0f);
+  g_Cube.rot = glm::vec3(0.0f);
+  g_Cube.Update(FRAME_TIME);
+
+
+  // second cube
+  g_OtherCube.CreateVertexBuffer(di, g_vb_solid_face_colors_Data, sizeof(g_vb_solid_face_colors_Data), sizeof(g_vb_solid_face_colors_Data[0]), false);
+  g_OtherCube.pos = glm::vec3(-1.0f, -1.f, -1.f);
+  g_OtherCube.scale = glm::vec3(.5f);
+  g_OtherCube.rot = glm::vec3(0.0f);
+  g_OtherCube.Update(FRAME_TIME);
 
 
   VkDescriptorImageInfo imgInfo = VkDescriptorImageInfo();
@@ -164,14 +178,15 @@ void LamiaMain(DeviceInfo &info)
   //pipelines control the state(s) of rendering, including which shaders are used, etc
 
   //input
-  g_Camera.Update(info, FRAME_TIME);
+  g_Cube.rot += 25.f * FRAME_TIME;
+  g_Cube.Update(FRAME_TIME);
+  g_Camera.UpdateUniform(info, FRAME_TIME, g_Cube.GetMatrix());
   //physics
-
+  
   //sound
   
   //render
   g_Pipeline.RenderTest(info, g_Cube.GetVBuffer(), g_Camera);
-  //VK_RenderCube(info);
 }
 
 
@@ -938,3 +953,17 @@ bool memory_type_from_properties(DeviceInfo & info, uint32_t typeBits, VkFlags r
   return false;
 }
 
+glm::mat4 GLMModelSRT(glm::vec3 scale, glm::vec3 const & Rotate, glm::vec3 const &Translate)
+{
+  glm::mat4 Model, S, R, T = glm::mat4(1.0f);
+  // this is per model
+  S = glm::scale(glm::mat4(1.0f), scale);
+
+  R = glm::rotate(R, glm::radians(Rotate.x), glm::vec3(1.0f, 0.0f, 0.0f));
+  R = glm::rotate(R, glm::radians(Rotate.y), glm::vec3(0.0f, 1.0f, 0.0f));
+  R = glm::rotate(R, glm::radians(Rotate.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+  T = glm::translate(T, Translate);
+
+  return T * R * S;
+}

@@ -30,11 +30,22 @@ class Model
     VkVertexInputAttributeDescription& GetVAtrribs(unsigned index);
     VkBuffer GetVBuffer(void);
 
+    void Update(float dt);
+
+    glm::mat4 GetMatrix(void);
+
+    // maybe later move this to physics object?
+    glm::vec3 pos;
+    glm::vec3 rot;
+    glm::vec3 scale;
+
   private: //unsure if these will stay private
     VkVertexInputBindingDescription viBinds;
     VkVertexInputAttributeDescription viAttribs[2];
 
     MVertexData vData;
+
+    glm::mat4 model;
 };
 
 

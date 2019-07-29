@@ -86,3 +86,13 @@ VkBuffer Model::GetVBuffer(void)
 {
   return vData.buf;
 }
+
+void Model::Update(float dt)
+{
+  model = GLMModelSRT(scale, rot, pos);
+}
+
+glm::mat4 Model::GetMatrix(void)
+{
+  return model;
+}

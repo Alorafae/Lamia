@@ -174,6 +174,7 @@ VkResult LamiaPipeline::CreatePipeline(DeviceInfo & di, VkBool32 depth, VkBool32
     vi.vertexAttributeDescriptionCount = 2;
     vi.pVertexAttributeDescriptions = VBI.viAttribs;
   }
+  // this determines triangles, lines, etc
   VkPipelineInputAssemblyStateCreateInfo ia;
   ia.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
   ia.pNext = NULL;
@@ -332,28 +333,27 @@ void LamiaPipeline::RenderTest(DeviceInfo & di, VkBuffer vBuff, Camera &cam)
   rp_begin.pClearValues = clear_values;
 
 
-  // IMPORTANT TO CALL OBVIOUSLY LMAO
+  // start recording commands
   VK_Exec_Cmd_Buffer(di);
 
   vkCmdBeginRenderPass(di.cmd, &rp_begin, VK_SUBPASS_CONTENTS_INLINE);
-
   vkCmdBindPipeline(di.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipe);
   vkCmdBindDescriptorSets(di.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLayout, 0, NUM_DESCRIPTOR_SETS, descSet.data(), 0, NULL);
+
 
   const VkDeviceSize offsets[1] = { 0 };
   vkCmdBindVertexBuffers(di.cmd, 0, 1, &vBuff, offsets);
 
-  //VK_Viewports(di);
-  //VK_Scissors(di);
 
   cam.SetViewport(di);
   cam.SetScissor(di);
 
   vkCmdDraw(di.cmd, 12 * 3, 1, 0, 0);
+
+
   vkCmdEndRenderPass(di.cmd);
   res = vkEndCommandBuffer(di.cmd);
-
-
+  // end recording commands
 
 
   const VkCommandBuffer cmd_bufs[] = { di.cmd };

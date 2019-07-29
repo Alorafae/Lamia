@@ -33,6 +33,7 @@
 #define GLM_FORCE_RADIANS
 #include "..\..\include\glm\glm.hpp"
 #include "..\..\include\glm\gtc\matrix_transform.hpp"
+#include "..\..\include\glm\gtc\quaternion.hpp"
 
 #define VK_USE_PLATFORM_WIN32_KHR
 #define U_ASSERT_ONLY
@@ -202,6 +203,7 @@ struct DeviceInfo
 void LamiaMain(DeviceInfo &info);
 
 bool memory_type_from_properties(DeviceInfo & info, uint32_t typeBits, VkFlags requirements_mask, uint32_t * typeIndex);
+glm::mat4 GLMModelSRT(glm::vec3 scale, glm::vec3 const & Rotate, glm::vec3 const &Translate);
 
 // startup functions
 VkResult VK_Start_Sequence(DeviceInfo &info);

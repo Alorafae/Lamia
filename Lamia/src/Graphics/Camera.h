@@ -23,8 +23,11 @@ class Camera
     Camera(DeviceInfo &di);
     ~Camera();
 
-    void Update(DeviceInfo &di, float dt);
+    // move to shaders
+    void UpdateUniform(DeviceInfo &di, float dt, glm::mat4 model);
     void BindUBO(DeviceInfo &info, glm::mat4 &model);
+    // move to shaders
+
 
     void SetViewport(DeviceInfo &di);
     void SetScissor(DeviceInfo &di);
