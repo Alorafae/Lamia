@@ -266,3 +266,77 @@ VkPipelineShaderStageCreateInfo * Shader::GetShaderStages(void)
 {
   return ShdTech;
 }
+
+void Shader::UpdateUniform(DeviceInfo & di, float dt, glm::mat4 mvp)
+{
+  VkResult U_ASSERT_ONLY res;
+
+  VkMemoryRequirements mr;
+  vkGetBufferMemoryRequirements(di.device, UBOBuffer, &mr);
+  // map memory may need to be different or not needed
+  uint8_t *pData;
+  res = vkMapMemory(di.device, VKD_Mem, 0, mr.size, 0, (void **)&pData);
+  assert(res == VK_SUCCESS);
+
+  memcpy(pData, &mvp, sizeof(mvp));
+
+  vkUnmapMemory(di.device, VKD_Mem);
+
+  res = vkBindBufferMemory(di.device, UBOBuffer, VKD_Mem, 0);
+  assert(res == VK_SUCCESS);
+}
+
+void Shader::BindUBO(DeviceInfo &di, glm::mat4 &mvp)
+{
+  VkBufferCreateInfo bi = {};
+  bi.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+  bi.pNext = NULL;
+  bi.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+  bi.size = sizeof(mvp); // will fix magic number here later
+  // need to make the UBO binding more dynamic 
+  // maybe with type info / meta data
+  bi.queueFamilyIndexCount = 0;
+  bi.pQueueFamilyIndices = NULL;
+  bi.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+  bi.flags = 0;
+  VkResult U_ASSERT_ONLY res = vkCreateBuffer(di.device, &bi, NULL, &UBOBuffer);
+  assert(res == VK_SUCCESS);
+
+  VkMemoryRequirements mr;
+  vkGetBufferMemoryRequirements(di.device, UBOBuffer, &mr);
+
+  VkMemoryAllocateInfo ai = {};
+  ai.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+  ai.pNext = NULL;
+  ai.memoryTypeIndex = 0;
+
+  ai.allocationSize = mr.size;
+  bool U_ASSERT_ONLY pass = memory_type_from_properties(di, mr.memoryTypeBits,
+    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+    &ai.memoryTypeIndex);
+  assert(pass && "No mappable, coherent memory");
+
+  res = vkAllocateMemory(di.device, &ai, NULL, &(VKD_Mem));
+  assert(res == VK_SUCCESS);
+
+  // map memory may need to be different or not needed
+  uint8_t *pData;
+  res = vkMapMemory(di.device, VKD_Mem, 0, mr.size, 0, (void **)&pData);
+  assert(res == VK_SUCCESS);
+
+  memcpy(pData, &mvp, sizeof(mvp));
+
+  vkUnmapMemory(di.device, VKD_Mem);
+
+  res = vkBindBufferMemory(di.device, UBOBuffer, VKD_Mem, 0);
+  assert(res == VK_SUCCESS);
+
+  UBufferInfo.buffer = UBOBuffer;
+  UBufferInfo.offset = 0;
+  UBufferInfo.range = sizeof(mvp);
+}
+
+VkDescriptorBufferInfo Shader::GetUBOInfo(void)
+{
+  return UBufferInfo;
+}

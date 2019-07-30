@@ -23,16 +23,10 @@ class Camera
     Camera(DeviceInfo &di);
     ~Camera();
 
-    // move to shaders
-    void UpdateUniform(DeviceInfo &di, float dt, glm::mat4 model);
-    void BindUBO(DeviceInfo &info, glm::mat4 &model);
-    // move to shaders
-
+    glm::mat4 GetMVP(void);
 
     void SetViewport(DeviceInfo &di);
     void SetScissor(DeviceInfo &di);
-
-    VkDescriptorBufferInfo GetCamUBOInfo(void);
 
     glm::vec3 cPos = glm::vec3(0.0f);
 
@@ -43,9 +37,4 @@ class Camera
 
     VkViewport viewport;
     VkRect2D scissor;
-
-    // uniform data
-    VkBuffer UBOBuffer;
-    VkDeviceMemory VKD_Mem;
-    VkDescriptorBufferInfo UBufferInfo;
 };

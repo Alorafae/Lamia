@@ -128,8 +128,9 @@ void CustomPipeInit(DeviceInfo &di)
   g_Camera.SetScissor(di);
   g_Camera.SetViewport(di);
   glm::mat4 model = glm::mat4(1.0f);
-  g_Camera.BindUBO(di, model);
-
+  //g_Camera.BindUBO(di, model);
+  glm::mat4 mvp = g_Camera.GetMVP();
+  g_ShdTech.BindUBO(di, mvp);
 
   // init our shaders
   g_ShdTech.CreateShaderStages(di);
@@ -156,7 +157,7 @@ void CustomPipeInit(DeviceInfo &di)
   // init our pipeline
   g_Pipeline.CreateDescriptorPipelineLayout(di, false);
   g_Pipeline.CreateDescriptorPool(di, false);
-  g_Pipeline.CreateDescriptorSet(di, g_Camera.GetCamUBOInfo(), imgInfo, false);
+  g_Pipeline.CreateDescriptorSet(di, g_ShdTech.GetUBOInfo(), imgInfo, false);
 
   g_Pipeline.CreatePipelineCache(di);
 
@@ -172,6 +173,7 @@ void CustomPipeInit(DeviceInfo &di)
 
 void LamiaMain(DeviceInfo &info)
 {
+  glm::mat4 camMVP = g_Camera.GetMVP();
   // at this point all the startup has happened
   // vulkan, shaders and everything is initialized & compiled and ready to go
 
@@ -180,7 +182,8 @@ void LamiaMain(DeviceInfo &info)
   //input
   g_Cube.rot += 25.f * FRAME_TIME;
   g_Cube.Update(FRAME_TIME);
-  g_Camera.UpdateUniform(info, FRAME_TIME, g_Cube.GetMatrix());
+  //g_Camera.UpdateUniform(info, FRAME_TIME, g_Cube.GetMatrix());
+  g_ShdTech.UpdateUniform(info, FRAME_TIME, camMVP * g_Cube.GetMatrix());
   //physics
   
   //sound
