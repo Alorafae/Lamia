@@ -50,18 +50,9 @@ class Shader
 
     VkPipelineShaderStageCreateInfo* GetShaderStages(void);
 
-    void UpdateUniform(DeviceInfo &di, float dt, glm::mat4 mvp);
-    void BindUBO(DeviceInfo &di, glm::mat4 &mvp);
-    VkDescriptorBufferInfo GetUBOInfo(void);
-
   private:
     const char* vertName;
     const char* fragName;
     bool fileload = false;
     VkPipelineShaderStageCreateInfo ShdTech[2];
-
-    // uniform data
-    VkBuffer UBOBuffer;
-    VkDeviceMemory VKD_Mem;
-    VkDescriptorBufferInfo UBufferInfo;
 };

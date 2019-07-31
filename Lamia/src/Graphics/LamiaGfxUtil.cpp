@@ -128,9 +128,14 @@ void CustomPipeInit(DeviceInfo &di)
   g_Camera.SetScissor(di);
   g_Camera.SetViewport(di);
   glm::mat4 model = glm::mat4(1.0f);
-  //g_Camera.BindUBO(di, model);
+
   glm::mat4 mvp = g_Camera.GetMVP();
-  g_ShdTech.BindUBO(di, mvp);
+
+
+  g_Cube.BindUBO(di, mvp);
+  g_OtherCube.BindUBO(di, mvp);
+
+
 
   // init our shaders
   g_ShdTech.CreateShaderStages(di);
@@ -146,7 +151,7 @@ void CustomPipeInit(DeviceInfo &di)
 
   // second cube
   g_OtherCube.CreateVertexBuffer(di, g_vb_solid_face_colors_Data, sizeof(g_vb_solid_face_colors_Data), sizeof(g_vb_solid_face_colors_Data[0]), false);
-  g_OtherCube.pos = glm::vec3(-1.0f, -1.f, -1.f);
+  g_OtherCube.pos = glm::vec3(-5.0f, -1.f, -1.f);
   g_OtherCube.scale = glm::vec3(.5f);
   g_OtherCube.rot = glm::vec3(0.0f);
   g_OtherCube.Update(FRAME_TIME);
@@ -157,11 +162,19 @@ void CustomPipeInit(DeviceInfo &di)
   // init our pipeline
   g_Pipeline.CreateDescriptorPipelineLayout(di, false);
   g_Pipeline.CreateDescriptorPool(di, false);
-  g_Pipeline.CreateDescriptorSet(di, g_ShdTech.GetUBOInfo(), imgInfo, false);
+
+  VkDescriptorPool dPool = g_Pipeline.GetDescPool();
+  VkDescriptorSetLayout* dLayout = g_Pipeline.GetDescLayoutData();
+  g_Cube.CreateDescriptorSet(di, dPool, dLayout, g_Cube.GetUBOInfo(), imgInfo, false);
+  g_OtherCube.CreateDescriptorSet(di, dPool, dLayout, g_OtherCube.GetUBOInfo(), imgInfo, false);
 
   g_Pipeline.CreatePipelineCache(di);
 
   // dont like how this is set up & sent to pipeline creation
+  // doesn't need to be per model
+  // makes more sense to move to shader
+  // since each shader would be concerned about vertex attributes
+  // and models using same shader would use same v attribs
   VertexBufferInfo VBI;
   VBI.viBinds = g_Cube.GetVBinds();
   VBI.viAttribs[0] = g_Cube.GetVAtrribs(0);
@@ -182,14 +195,35 @@ void LamiaMain(DeviceInfo &info)
   //input
   g_Cube.rot += 25.f * FRAME_TIME;
   g_Cube.Update(FRAME_TIME);
-  //g_Camera.UpdateUniform(info, FRAME_TIME, g_Cube.GetMatrix());
-  g_ShdTech.UpdateUniform(info, FRAME_TIME, camMVP * g_Cube.GetMatrix());
+  
+
+  g_OtherCube.rot.y += 25.f * FRAME_TIME;
+  g_OtherCube.Update(FRAME_TIME);
   //physics
   
   //sound
   
   //render
-  g_Pipeline.RenderTest(info, g_Cube.GetVBuffer(), g_Camera);
+  FrameInfo fi;
+  g_Pipeline.FrameStart(info, fi);
+
+  
+  g_Camera.SetViewport(info);
+  g_Camera.SetScissor(info);
+
+
+  g_Pipeline.BindDescriptorSet(info, g_Cube.GetDescriptorSetData());
+  g_Cube.UpdateUniform(info, FRAME_TIME, camMVP * g_Cube.GetMatrix());
+  g_Cube.Render(info, g_Camera);
+
+
+  g_Pipeline.BindDescriptorSet(info, g_OtherCube.GetDescriptorSetData());
+  g_OtherCube.UpdateUniform(info, FRAME_TIME, camMVP * g_OtherCube.GetMatrix());
+  g_OtherCube.Render(info, g_Camera);
+
+
+  // end of frame
+  g_Pipeline.FrameEnd(info, fi);
 }
 
 

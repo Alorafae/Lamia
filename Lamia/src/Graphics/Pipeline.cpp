@@ -76,60 +76,12 @@ VkResult LamiaPipeline::CreateDescriptorPool(DeviceInfo & di, bool textured)
   VkDescriptorPoolCreateInfo descriptor_pool = {};
   descriptor_pool.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
   descriptor_pool.pNext = NULL;
-  descriptor_pool.maxSets = 1;
+  descriptor_pool.maxSets = 2; // total number of descriptor sets that can be created for this pipeline
   descriptor_pool.poolSizeCount = textured ? 2 : 1;
   descriptor_pool.pPoolSizes = type_count;
 
   res = vkCreateDescriptorPool(di.device, &descriptor_pool, NULL, &descPool);
   assert(res == VK_SUCCESS);
-
-  return res;
-}
-
-VkResult LamiaPipeline::CreateDescriptorSet(DeviceInfo & di, VkDescriptorBufferInfo bufInfo, VkDescriptorImageInfo imgInfo, bool textured)
-{
-  /* DEPENDS on init_descriptor_pool() */
-
-  VkResult U_ASSERT_ONLY res;
-
-  VkDescriptorSetAllocateInfo alloc_info[1];
-  alloc_info[0].sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-  alloc_info[0].pNext = NULL;
-  alloc_info[0].descriptorPool = descPool;
-  alloc_info[0].descriptorSetCount = NUM_DESCRIPTOR_SETS;
-  alloc_info[0].pSetLayouts = descLayout.data();
-
-  descSet.resize(NUM_DESCRIPTOR_SETS);
-  res = vkAllocateDescriptorSets(di.device, alloc_info, descSet.data());
-  assert(res == VK_SUCCESS);
-
-  VkWriteDescriptorSet writes[2];
-
-  // this is where the uniforms/samplers are bound to the pipeline
-  writes[0] = {};
-  writes[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-  writes[0].pNext = NULL;
-  writes[0].dstSet = descSet[0];
-  writes[0].descriptorCount = 1;
-  writes[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-  // IMPORTANT THIS IS THE UNIFORM BUFFER DATA
-  writes[0].pBufferInfo = &bufInfo;
-  writes[0].dstArrayElement = 0;
-  writes[0].dstBinding = 0;
-
-  //texture sampler binding
-  if (textured) {
-    writes[1] = {};
-    writes[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-    writes[1].dstSet = descSet[0];
-    writes[1].dstBinding = 1;
-    writes[1].descriptorCount = 1;
-    writes[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    writes[1].pImageInfo = &imgInfo;
-    writes[1].dstArrayElement = 0;
-  }
-
-  vkUpdateDescriptorSets(di.device, textured ? 2 : 1, writes, 0, NULL);
 
   return res;
 }
@@ -291,7 +243,22 @@ VkResult LamiaPipeline::CreatePipeline(DeviceInfo & di, VkBool32 depth, VkBool32
   return res;
 }
 
-void LamiaPipeline::RenderTest(DeviceInfo & di, VkBuffer vBuff, Camera &cam)
+VkDescriptorPool LamiaPipeline::GetDescPool(void)
+{
+  return descPool;
+}
+
+VkDescriptorSetLayout* LamiaPipeline::GetDescLayoutData(void)
+{
+  return descLayout.data();
+}
+
+void LamiaPipeline::BindDescriptorSet(DeviceInfo & di, VkDescriptorSet * dSetData)
+{
+  vkCmdBindDescriptorSets(di.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLayout, 0, NUM_DESCRIPTOR_SETS, dSetData, 0, NULL);
+}
+
+void LamiaPipeline::FrameStart(DeviceInfo & di, FrameInfo & fi)
 {
   VkResult U_ASSERT_ONLY res;
 
@@ -303,18 +270,17 @@ void LamiaPipeline::RenderTest(DeviceInfo & di, VkBuffer vBuff, Camera &cam)
   clear_values[1].depthStencil.depth = 1.0f;
   clear_values[1].depthStencil.stencil = 0;
 
-  VkSemaphore imageAcquiredSemaphore;
   VkSemaphoreCreateInfo imageAcquiredSemaphoreCreateInfo;
   imageAcquiredSemaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
   imageAcquiredSemaphoreCreateInfo.pNext = NULL;
   imageAcquiredSemaphoreCreateInfo.flags = 0;
 
 
-  res = vkCreateSemaphore(di.device, &imageAcquiredSemaphoreCreateInfo, NULL, &imageAcquiredSemaphore);
+  res = vkCreateSemaphore(di.device, &imageAcquiredSemaphoreCreateInfo, NULL, &fi.imageAcquiredSemaphore);
   assert(res == VK_SUCCESS);
 
   // Get the index of the next available swapchain image:
-  res = vkAcquireNextImageKHR(di.device, di.swap_chain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE, &di.current_buffer);
+  res = vkAcquireNextImageKHR(di.device, di.swap_chain, UINT64_MAX, fi.imageAcquiredSemaphore, VK_NULL_HANDLE, &di.current_buffer);
 
   // TODO: Deal with the VK_SUBOPTIMAL_KHR and VK_ERROR_OUT_OF_DATE_KHR
   // return codes
@@ -332,29 +298,23 @@ void LamiaPipeline::RenderTest(DeviceInfo & di, VkBuffer vBuff, Camera &cam)
   rp_begin.clearValueCount = 2;
   rp_begin.pClearValues = clear_values;
 
-
-  // start recording commands
+  //-----
   VK_Exec_Cmd_Buffer(di);
 
   vkCmdBeginRenderPass(di.cmd, &rp_begin, VK_SUBPASS_CONTENTS_INLINE);
   vkCmdBindPipeline(di.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipe);
-  vkCmdBindDescriptorSets(di.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLayout, 0, NUM_DESCRIPTOR_SETS, descSet.data(), 0, NULL);
 
+  // change per object
+  //vkCmdBindDescriptorSets(di.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLayout, 0, NUM_DESCRIPTOR_SETS, descSet.data(), 0, NULL);
+}
 
-  const VkDeviceSize offsets[1] = { 0 };
-  vkCmdBindVertexBuffers(di.cmd, 0, 1, &vBuff, offsets);
-
-
-  cam.SetViewport(di);
-  cam.SetScissor(di);
-
-  vkCmdDraw(di.cmd, 12 * 3, 1, 0, 0);
-
+void LamiaPipeline::FrameEnd(DeviceInfo & di, FrameInfo & fi)
+{
+  VkResult U_ASSERT_ONLY res;
 
   vkCmdEndRenderPass(di.cmd);
   res = vkEndCommandBuffer(di.cmd);
-  // end recording commands
-
+  //---
 
   const VkCommandBuffer cmd_bufs[] = { di.cmd };
 
@@ -370,7 +330,7 @@ void LamiaPipeline::RenderTest(DeviceInfo & di, VkBuffer vBuff, Camera &cam)
   submit_info[0].pNext = NULL;
   submit_info[0].sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
   submit_info[0].waitSemaphoreCount = 1;
-  submit_info[0].pWaitSemaphores = &imageAcquiredSemaphore;
+  submit_info[0].pWaitSemaphores = &fi.imageAcquiredSemaphore;
   submit_info[0].pWaitDstStageMask = &pipe_stage_flags;
   submit_info[0].commandBufferCount = 1;
   submit_info[0].pCommandBuffers = cmd_bufs;

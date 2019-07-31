@@ -10,6 +10,16 @@ struct VertexBufferInfo
   VkVertexInputAttributeDescription viAttribs[2];
 };
 
+struct FrameInfo
+{
+  VkSemaphore imageAcquiredSemaphore;
+  VkSemaphoreCreateInfo imageAcquiredSemaphoreCreateInfo;
+  VkRenderPassBeginInfo rpBeginInfo;
+
+  VkFenceCreateInfo fenceInfo;
+  VkFence drawFence;
+};
+
 class LamiaPipeline
 {
   public:
@@ -18,13 +28,20 @@ class LamiaPipeline
 
     VkResult CreateDescriptorPipelineLayout(DeviceInfo &di, bool textured, VkDescriptorSetLayoutCreateFlags descSetLayoutCreateFlags = 0);
     VkResult CreateDescriptorPool(DeviceInfo &di, bool textured);
-    VkResult CreateDescriptorSet(DeviceInfo &di, VkDescriptorBufferInfo bufInfo, VkDescriptorImageInfo imgInfo, bool textured);
 
     VkResult CreatePipelineCache(DeviceInfo &di);
 
     VkResult CreatePipeline(DeviceInfo &di, VkBool32 depth, VkBool32 vertexInput, VertexBufferInfo &VBI, VkPipelineShaderStageCreateInfo *ShdTechStages, bool textured);
 
-    void RenderTest(DeviceInfo &di, VkBuffer vBuff, Camera &cam);
+
+    VkDescriptorPool GetDescPool(void);
+    VkDescriptorSetLayout* GetDescLayoutData(void);
+    void BindDescriptorSet(DeviceInfo &di, VkDescriptorSet* dSetData);
+
+    void FrameStart(DeviceInfo &di, FrameInfo &fi);
+
+
+    void FrameEnd(DeviceInfo &di, FrameInfo &fi);
 
   private:
     VkPipelineLayout pipeLayout;
@@ -32,7 +49,6 @@ class LamiaPipeline
 
     std::vector<VkDescriptorSetLayout> descLayout;
     VkDescriptorPool descPool;
-    std::vector<VkDescriptorSet> descSet;
 
     VkPipeline pipe;
 };

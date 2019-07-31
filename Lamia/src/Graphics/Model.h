@@ -31,6 +31,14 @@ class Model
     VkBuffer GetVBuffer(void);
 
     void Update(float dt);
+    void Render(DeviceInfo &di, Camera &cam);
+
+    void UpdateUniform(DeviceInfo &di, float dt, glm::mat4 mvp);
+    void BindUBO(DeviceInfo &di, glm::mat4 &mvp);
+    VkDescriptorBufferInfo GetUBOInfo(void);
+
+    VkResult CreateDescriptorSet(DeviceInfo &di, VkDescriptorPool &descPool, VkDescriptorSetLayout *descLayoutData, VkDescriptorBufferInfo bufInfo, VkDescriptorImageInfo imgInfo, bool textured);
+    VkDescriptorSet* GetDescriptorSetData(void);
 
     glm::mat4 GetMatrix(void);
 
@@ -46,6 +54,13 @@ class Model
     MVertexData vData;
 
     glm::mat4 model;
+
+
+    // uniform data
+    VkBuffer UBOBuffer;
+    VkDeviceMemory VKD_Mem;
+    VkDescriptorBufferInfo UBufferInfo;
+    std::vector<VkDescriptorSet> descSet;
 };
 
 
