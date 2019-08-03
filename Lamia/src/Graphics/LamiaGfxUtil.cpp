@@ -121,6 +121,11 @@ static LamiaPipeline g_Pipeline;
 
 static Model g_OtherCube;
 
+// attempting to make a grid from line list
+// with a new pipeline that is set for lines
+static Model g_Grid;
+static LamiaPipeline g_LinePipeline;
+
 void CustomPipeInit(DeviceInfo &di)
 {
   // init our camera

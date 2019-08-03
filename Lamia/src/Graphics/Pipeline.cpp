@@ -102,7 +102,8 @@ VkResult LamiaPipeline::CreatePipelineCache(DeviceInfo & di)
   return res;
 }
 
-VkResult LamiaPipeline::CreatePipeline(DeviceInfo & di, VkBool32 depth, VkBool32 vertexInput, VertexBufferInfo &VBI, VkPipelineShaderStageCreateInfo *ShdTechStages, bool textured)
+VkResult LamiaPipeline::CreatePipeline(DeviceInfo & di, VkBool32 depth, VkBool32 vertexInput, VertexBufferInfo &VBI,
+  VkPipelineShaderStageCreateInfo *ShdTechStages, bool textured, VkPrimitiveTopology topology)
 {
   VkResult U_ASSERT_ONLY res;
 
@@ -132,7 +133,8 @@ VkResult LamiaPipeline::CreatePipeline(DeviceInfo & di, VkBool32 depth, VkBool32
   ia.pNext = NULL;
   ia.flags = 0;
   ia.primitiveRestartEnable = VK_FALSE;
-  ia.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+  // this is tri list, line list, etc
+  ia.topology = topology;
 
   VkPipelineRasterizationStateCreateInfo rs;
   rs.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
