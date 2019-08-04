@@ -24,30 +24,7 @@
 #include "Pipeline.h"
 #include "Model.h"
 
- // MS-Windows event handling function:
-LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-  struct DeviceInfo *info = reinterpret_cast<struct DeviceInfo *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
-  switch (uMsg)
-  {
-  case WM_CLOSE:
-    PostQuitMessage(0);
-    break;
-  case WM_DESTROY:
-    PostQuitMessage(0);
-    return 0;
-  case WM_PAINT:
-    LamiaMain(*info); // game main loop
-    return 0;
-  case WM_KEYDOWN:
-    LamiaInput_KEYDOWN(wParam);
-    return 0;
-  default:
-    break;
-  }
-  return (DefWindowProc(hWnd, uMsg, wParam, lParam));
-}
 
 VkResult VK_Create_Window(DeviceInfo &info)
 {
@@ -131,7 +108,9 @@ static std::vector<glm::vec4> g_GridLinedata;
 void CustomPipeInit(DeviceInfo &di)
 {
   // init our camera
-  g_Camera.cPos = glm::vec3(-5, 3, -10);
+  g_Camera.cPos = glm::vec3(-5, -3, -10);
+  g_Camera.SetView();
+
   g_Camera.SetScissor(di);
   g_Camera.SetViewport(di);
   glm::mat4 model = glm::mat4(1.0f);
@@ -166,6 +145,22 @@ void CustomPipeInit(DeviceInfo &di)
     gridstartleft.z += 1.f;
     gridstartright.z += 1.f;
   }
+
+  // X orientation line
+  g_GridLinedata.push_back(glm::vec4(-10.f, 0.f, 0.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(1.f, 0.f, 0.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(10.f, 0.f, 0.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(1.f, 0.f, 0.f, 1.f));
+  // Y orientation line
+  g_GridLinedata.push_back(glm::vec4(0.f, -10.f, 0.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(0.f, 1.f, 0.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(0.f, 10.f, 0.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(0.f, 1.f, 0.f, 1.f));
+  // Z orientation line
+  g_GridLinedata.push_back(glm::vec4(0.f, 0.f, -10.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(0.f, 0.f, 1.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(0.f, 0.f, 10.f, 1.f));
+  g_GridLinedata.push_back(glm::vec4(0.f, 0.f, 1.f, 1.f));
 
 
   // init our shaders
@@ -217,7 +212,7 @@ void CustomPipeInit(DeviceInfo &di)
   VkDescriptorSetLayout* dLayoutLine = g_LinePipeline.GetDescLayoutData();
   g_Grid.CreateDescriptorSet(di, dPoolLine, dLayoutLine, g_Grid.GetUBOInfo(), imgInfo, false);
   g_LinePipeline.CreatePipelineCache(di);
-  g_Grid.vCount = 44;
+  g_Grid.vCount = g_GridLinedata.size() / 2;
 
   // dont like how this is set up & sent to pipeline creation
   // doesn't need to be per model
@@ -242,6 +237,7 @@ void CustomPipeInit(DeviceInfo &di)
 
 void LamiaMain(DeviceInfo &info)
 {
+  g_Camera.SetView();
   glm::mat4 camMVP = g_Camera.GetMVP();
   // at this point all the startup has happened
   // vulkan, shaders and everything is initialized & compiled and ready to go

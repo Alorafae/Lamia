@@ -28,12 +28,16 @@ class Camera
     void SetViewport(DeviceInfo &di);
     void SetScissor(DeviceInfo &di);
 
+    glm::mat4 SetView(void);
+
     glm::vec3 cPos = glm::vec3(0.0f);
+    glm::vec3 cRot = glm::vec3(0.0f);
 
     glm::mat4 TestMVP;
     
   private:
     CameraUBO cUBO;
+    glm::mat4 cView = glm::mat4(1.0f);
 
     VkViewport viewport;
     VkRect2D scissor;

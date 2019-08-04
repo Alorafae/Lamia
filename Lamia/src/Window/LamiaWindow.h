@@ -7,4 +7,7 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
+#include "..\Graphics\LamiaGfxUtil.h"
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void LamiaInput_KEYDOWN(WPARAM wParam);
