@@ -134,6 +134,7 @@
     <ClCompile Include="src\Window\LamiaWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="data\cube_data.h" />
     <ClInclude Include="include\vulkan\vk_icd.h" />
     <ClInclude Include="include\vulkan\vk_layer.h" />
     <ClInclude Include="include\vulkan\vk_layer_dispatch_table.h" />

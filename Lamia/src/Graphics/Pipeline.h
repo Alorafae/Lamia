@@ -46,6 +46,8 @@ class LamiaPipeline
     void FrameStart(DeviceInfo &di, FrameInfo &fi);
     void FrameEnd(DeviceInfo &di, FrameInfo &fi);
 
+    VkPipeline GetPipeline(void);
+
   private:
     VkPipelineLayout pipeLayout;
     VkPipelineCache pipeCache;

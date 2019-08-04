@@ -100,7 +100,7 @@ void Model::Render(DeviceInfo & di, Camera & cam)
   //cam.SetViewport(di);
   //cam.SetScissor(di);
 
-  vkCmdDraw(di.cmd, 12 * 3, 1, 0, 0);
+  vkCmdDraw(di.cmd, vCount, 1, 0, 0);
 }
 
 void Model::UpdateUniform(DeviceInfo & di, float dt, glm::mat4 mvp)

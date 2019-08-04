@@ -11,7 +11,7 @@ Camera::Camera()
   }
 
   cUBO.proj = glm::perspective(fov, static_cast<float>(DEFAULT_WIDTH) / static_cast<float>(DEFAULT_HEIGHT), DEFAULT_NEAR_PLANE, DEFAULT_FAR_PLANE);
-  cUBO.view = glm::lookAt(glm::vec3(-5, 3, -10),  // Camera is at (-5,3,-10), in World Space
+  cUBO.view = glm::lookAt(glm::vec3(-5, -3, -10),  // Camera is at (-5,3,-10), in World Space
     glm::vec3(0, 0, 0),     // and looks at the origin
     glm::vec3(0, -1, 0)     // Head is up (set to 0,-1,0 to look upside-down)
   );

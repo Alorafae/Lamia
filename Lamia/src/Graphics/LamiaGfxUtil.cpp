@@ -126,6 +126,8 @@ static Model g_OtherCube;
 static Model g_Grid;
 static LamiaPipeline g_LinePipeline;
 
+static std::vector<glm::vec4> g_GridLinedata;
+
 void CustomPipeInit(DeviceInfo &di)
 {
   // init our camera
@@ -139,7 +141,31 @@ void CustomPipeInit(DeviceInfo &di)
 
   g_Cube.BindUBO(di, mvp);
   g_OtherCube.BindUBO(di, mvp);
+  g_Grid.BindUBO(di, mvp);
 
+  glm::vec4 gridstartbot = glm::vec4(-5.f, 0.f, -5.f, 1.f);
+  glm::vec4 gridstarttop = glm::vec4(-5.f, 0.f, 5.f, 1.f);
+  for (unsigned i = 0; i < 11; ++i)
+  {
+    g_GridLinedata.push_back(gridstartbot);
+    g_GridLinedata.push_back(glm::vec4(.5f, .5f, .5f, 1.f));
+    g_GridLinedata.push_back(gridstarttop);
+    g_GridLinedata.push_back(glm::vec4(.5f, .5f, .5f, 1.f));
+    gridstartbot.x += 1.f;
+    gridstarttop.x += 1.f;    
+  }
+
+  glm::vec4 gridstartleft = glm::vec4(-5.f, 0.f, -5.f, 1.f);
+  glm::vec4 gridstartright = glm::vec4(5.f, 0.f, -5.f, 1.f);
+  for (unsigned i = 0; i < 11; ++i)
+  {
+    g_GridLinedata.push_back(gridstartleft);
+    g_GridLinedata.push_back(glm::vec4(.5f, .5f, .5f, 1.f));
+    g_GridLinedata.push_back(gridstartright);
+    g_GridLinedata.push_back(glm::vec4(.5f, .5f, .5f, 1.f));
+    gridstartleft.z += 1.f;
+    gridstartright.z += 1.f;
+  }
 
 
   // init our shaders
@@ -161,6 +187,12 @@ void CustomPipeInit(DeviceInfo &di)
   g_OtherCube.rot = glm::vec3(0.0f);
   g_OtherCube.Update(FRAME_TIME);
 
+  // grid
+  g_Grid.CreateVertexBuffer(di, g_GridLinedata.data(), g_GridLinedata.size() * sizeof(glm::vec4), sizeof(glm::vec4) * 2, false);
+  g_Grid.pos = glm::vec3(0.f, 0.f, 0.f);
+  g_Grid.scale = glm::vec3(1.f);
+  g_Grid.rot = glm::vec3(0.0f);
+  g_Grid.Update(FRAME_TIME);
 
   VkDescriptorImageInfo imgInfo = VkDescriptorImageInfo();
   
@@ -168,12 +200,24 @@ void CustomPipeInit(DeviceInfo &di)
   g_Pipeline.CreateDescriptorPipelineLayout(di, false);
   g_Pipeline.CreateDescriptorPool(di, false);
 
+  // init our grid pipeline
+  g_LinePipeline.CreateDescriptorPipelineLayout(di, false);
+  g_LinePipeline.CreateDescriptorPool(di, false);
+
+
   VkDescriptorPool dPool = g_Pipeline.GetDescPool();
   VkDescriptorSetLayout* dLayout = g_Pipeline.GetDescLayoutData();
   g_Cube.CreateDescriptorSet(di, dPool, dLayout, g_Cube.GetUBOInfo(), imgInfo, false);
   g_OtherCube.CreateDescriptorSet(di, dPool, dLayout, g_OtherCube.GetUBOInfo(), imgInfo, false);
 
   g_Pipeline.CreatePipelineCache(di);
+
+  // grid pipeline
+  VkDescriptorPool dPoolLine = g_LinePipeline.GetDescPool();
+  VkDescriptorSetLayout* dLayoutLine = g_LinePipeline.GetDescLayoutData();
+  g_Grid.CreateDescriptorSet(di, dPoolLine, dLayoutLine, g_Grid.GetUBOInfo(), imgInfo, false);
+  g_LinePipeline.CreatePipelineCache(di);
+  g_Grid.vCount = 44;
 
   // dont like how this is set up & sent to pipeline creation
   // doesn't need to be per model
@@ -185,6 +229,13 @@ void CustomPipeInit(DeviceInfo &di)
   VBI.viAttribs[0] = g_Cube.GetVAtrribs(0);
   VBI.viAttribs[1] = g_Cube.GetVAtrribs(1);
   g_Pipeline.CreatePipeline(di, true, true, VBI, g_ShdTech.GetShaderStages(), false);
+
+
+  VertexBufferInfo VBILine;
+  VBILine.viBinds = g_Grid.GetVBinds();
+  VBILine.viAttribs[0] = g_Grid.GetVAtrribs(0);
+  VBILine.viAttribs[1] = g_Grid.GetVAtrribs(1);
+  g_LinePipeline.CreatePipeline(di, true, true, VBILine, g_ShdTech.GetShaderStages(), false, VK_PRIMITIVE_TOPOLOGY_LINE_LIST);
 }
 
 // above function & globals to be removed after testing
@@ -204,6 +255,8 @@ void LamiaMain(DeviceInfo &info)
 
   g_OtherCube.rot.y += 25.f * FRAME_TIME;
   g_OtherCube.Update(FRAME_TIME);
+
+  g_Grid.Update(FRAME_TIME);
   //physics
   
   //sound
@@ -226,6 +279,11 @@ void LamiaMain(DeviceInfo &info)
   g_OtherCube.UpdateUniform(info, FRAME_TIME, camMVP * g_OtherCube.GetMatrix());
   g_OtherCube.Render(info, g_Camera);
 
+
+  vkCmdBindPipeline(info.cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, g_LinePipeline.GetPipeline());
+  g_LinePipeline.BindDescriptorSet(info, g_Grid.GetDescriptorSetData());
+  g_Grid.UpdateUniform(info, FRAME_TIME, camMVP * g_Grid.GetMatrix());
+  g_Grid.Render(info, g_Camera);
 
   // end of frame
   g_Pipeline.FrameEnd(info, fi);

@@ -19,6 +19,9 @@
     <Filter Include="Window">
       <UniqueIdentifier>{67826843-c8c1-422d-a1ab-39f481f1f80b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{e673558a-b9e8-4257-a05f-ed16aa8154f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Pipeline.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="data\cube_data.h">
+      <Filter>Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -47,6 +47,8 @@ class Model
     glm::vec3 rot;
     glm::vec3 scale;
 
+    uint32_t vCount = 36;
+
   private: //unsure if these will stay private
     VkVertexInputBindingDescription viBinds;
     VkVertexInputAttributeDescription viAttribs[2];

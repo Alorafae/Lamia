@@ -366,3 +366,8 @@ void LamiaPipeline::FrameEnd(DeviceInfo & di, FrameInfo & fi)
 
   assert(res == VK_SUCCESS);
 }
+
+VkPipeline LamiaPipeline::GetPipeline(void)
+{
+  return pipe;
+}
