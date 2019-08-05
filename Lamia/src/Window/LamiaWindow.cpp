@@ -28,12 +28,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 void LamiaInput_KEYDOWN(WPARAM wParam)
 {
+  ProcessInputMessage(wParam);
   switch (wParam)
   {
     case VK_ESCAPE:
       PostQuitMessage(0);
-      break;
-    case VK_RIGHT:
       break;
   }
 }

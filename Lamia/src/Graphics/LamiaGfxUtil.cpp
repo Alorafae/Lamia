@@ -285,6 +285,25 @@ void LamiaMain(DeviceInfo &info)
   g_Pipeline.FrameEnd(info, fi);
 }
 
+void ProcessInputMessage(WPARAM wParam)
+{
+  switch (wParam)
+  {
+    case VK_RIGHT:
+      g_Camera.cPos.x += 10.0f * FRAME_TIME;
+      break;
+    case VK_LEFT:
+      g_Camera.cPos.x -= 10.0f * FRAME_TIME;
+      break;
+    case VK_UP:
+      g_Camera.cPos.z += 10.0f * FRAME_TIME;
+      break;
+    case VK_DOWN:
+      g_Camera.cPos.z -= 10.0f * FRAME_TIME;
+      break;
+  }
+}
+
 
 VkResult VK_Start_Sequence(DeviceInfo& info)
 {

@@ -203,6 +203,8 @@ struct DeviceInfo
 
 void LamiaMain(DeviceInfo &info);
 
+void ProcessInputMessage(WPARAM wParam);
+
 bool memory_type_from_properties(DeviceInfo & info, uint32_t typeBits, VkFlags requirements_mask, uint32_t * typeIndex);
 glm::mat4 GLMModelSRT(glm::vec3 scale, glm::vec3 const & Rotate, glm::vec3 const &Translate);
 
