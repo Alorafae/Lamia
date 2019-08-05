@@ -194,6 +194,7 @@ VkResult Model::CreateDescriptorSet(DeviceInfo & di, VkDescriptorPool &descPool,
   res = vkAllocateDescriptorSets(di.device, alloc_info, descSet.data());
   assert(res == VK_SUCCESS);
 
+  // number of writes would equal numbers of uniforms + number of samplers
   VkWriteDescriptorSet writes[2];
 
   // this is where the uniforms/samplers are bound to the pipeline

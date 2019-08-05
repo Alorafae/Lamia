@@ -285,6 +285,7 @@ void LamiaMain(DeviceInfo &info)
   g_Pipeline.FrameEnd(info, fi);
 }
 
+// this all needs to be raw input later on, this is temporary
 void ProcessInputMessage(WPARAM wParam)
 {
   switch (wParam)
@@ -485,6 +486,14 @@ VkResult VK_Enumerate_Device(DeviceInfo &info, uint32_t gpu_count)
   /* This is as good a place as any to do this */
   vkGetPhysicalDeviceMemoryProperties(info.gpus[0], &info.memory_properties);
   vkGetPhysicalDeviceProperties(info.gpus[0], &info.gpu_props);
+
+  printf("Vulkan API Version: %u\n", info.gpu_props.apiVersion);
+  printf("Vulkan Driver Version: %u\n", info.gpu_props.driverVersion);
+  printf("GPU Vendor ID: %u\n", info.gpu_props.vendorID);
+  printf("GPU Device ID: %u\n", info.gpu_props.deviceID);
+  printf("GPU Device Name: %s\n", info.gpu_props.deviceName);
+
+  printf("GPU Max Bound Descriptor Sets: %u\n", info.gpu_props.limits.maxBoundDescriptorSets);
 
   return res;
 }
