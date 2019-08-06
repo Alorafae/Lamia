@@ -23,7 +23,6 @@
 #include "..\Window\LamiaWindow.h"
 
 
-
 #include <stdio.h>
 #include <iostream>
 #include <assert.h>

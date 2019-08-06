@@ -1,10 +1,16 @@
 
 #include "..\src\Graphics\LamiaGfxUtil.h"
+#include "..\include\physfs\physfs.h"
 
 // make sure to link vulkan-1.lib to the project
 
 int main(void)
 {
+  // need to make a "system" that holds the
+  // physfs, vulkan, messaging, etc
+  // that components will have access to 
+  PHYSFS_init(NULL);
+
   DeviceInfo VK_Engine = {};
 
   VK_Start_Sequence(VK_Engine);
