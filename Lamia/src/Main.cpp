@@ -13,6 +13,9 @@ int main(void)
 
   DeviceInfo VK_Engine = {};
 
+  // file system, messaging system, physics system
+  // vulkan system... more to come probably.
+
   VK_Start_Sequence(VK_Engine);
 
   UpdateWindow(VK_Engine.window);

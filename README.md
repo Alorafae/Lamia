@@ -3,7 +3,8 @@ Lamia Engine
 
 VS 2017 Community is current compiler in use.
 
-All libraries are compiled for this in x86 debug, x86 release, x64 debug, and x64 release.
+All libraries are compiled for this in x86 debug, x86 release, x64 debug, and x64 release. 
+*(except physfs, currently only x64 release and debug)
 
 Compilation across all four configurations is currently working.
 
@@ -15,7 +16,9 @@ The two files (the LamiaGfxUtil files) are under Apache License due to majority 
 
 Glslang, SPIRV, and Vulkan are also under Apache License and are not modified.
 
-GLM utilizes MIT license.
+Physfs is under zlib license and not modified.
+
+GLM utilizes MIT license and is not modified.
 
 All other files are and will be MIT license.
 
