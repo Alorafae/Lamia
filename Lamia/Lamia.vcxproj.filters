@@ -22,6 +22,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{e673558a-b9e8-4257-a05f-ed16aa8154f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{815fa0f2-bafb-4772-a65d-c19ab2ada63a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -44,6 +47,12 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Pipeline.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\Systems.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\LamiaFile.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="data\cube_data.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\Systems.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\LamiaFile.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

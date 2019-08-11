@@ -4,6 +4,9 @@
 // MS-Windows event handling function:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+  // this actually needs to be like a system pointer
+  // that will hold pointers to all our game systems
+  // eg System* holds pointers to sound, graphics, etc
   struct DeviceInfo *info = reinterpret_cast<struct DeviceInfo *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
   switch (uMsg)

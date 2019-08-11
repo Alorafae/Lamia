@@ -1,8 +1,10 @@
 
 #include "Model.h"
+#include "..\Systems\Systems.h"
 
 Model::Model()
 {
+  LamiaSystem();
 }
 
 Model::~Model()
