@@ -108,6 +108,11 @@ static std::vector<glm::vec4> g_GridLinedata;
 
 void CustomPipeInit(DeviceInfo &di)
 {
+  // intended way of using the systems
+  // not sure if i want to add it to a namespace
+  const char* filedata = LamiaSystem()->FileSystem()->GetFileData("test");
+
+
   // init our camera
   g_Camera.cPos = glm::vec3(-5, -3, -10);
   g_Camera.SetView();

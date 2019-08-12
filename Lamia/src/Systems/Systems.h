@@ -10,8 +10,7 @@ class Systems
     Systems();
     ~Systems();
 
-
-    LamiaFile* FileSystem(void);
+    LamiaFile* const FileSystem(void);
   private:
     // file system
     LamiaFile* lf = NULL;
@@ -24,5 +23,8 @@ class Systems
     // physics system
 };
 
-const Systems* LamiaSystem(void);
+bool LamiaSystemsInit(void);
+bool LamiaSystemsShutdown(void);
+
+Systems* const LamiaSystem(void);
 

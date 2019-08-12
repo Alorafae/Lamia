@@ -9,6 +9,9 @@ int main(void)
   // need to make a "system" that holds the
   // physfs, vulkan, messaging, etc
   // that components will have access to 
+
+  LamiaSystemsInit();
+
   PHYSFS_init(NULL);
 
   DeviceInfo VK_Engine = {};
