@@ -1,6 +1,8 @@
 
 #pragma once
 #include "LamiaFile.h"
+#include "LamiaGraphics.h"
+#include "LamiaInput.h"
 
 class Systems
 {
@@ -12,12 +14,14 @@ class Systems
     LamiaFile* FileSystem(void);
   private:
     // file system
-    LamiaFile *lf;
+    LamiaFile* lf = NULL;
     // audio system
 
-    // input system
-
+    // raw input system
+    LamiaInput* li = NULL;
     // graphics system
+    LamiaGraphics* vi = NULL;
+    // physics system
 };
 
 const Systems* LamiaSystem(void);

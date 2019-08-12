@@ -184,7 +184,7 @@ void CustomPipeInit(DeviceInfo &di)
   g_OtherCube.Update(FRAME_TIME);
 
   // grid
-  g_Grid.CreateVertexBuffer(di, g_GridLinedata.data(), g_GridLinedata.size() * sizeof(glm::vec4), sizeof(glm::vec4) * 2, false);
+  g_Grid.CreateVertexBuffer(di, g_GridLinedata.data(), uint32_t(g_GridLinedata.size()) * sizeof(glm::vec4), sizeof(glm::vec4) * 2, false);
   g_Grid.pos = glm::vec3(0.f, 0.f, 0.f);
   g_Grid.scale = glm::vec3(1.f);
   g_Grid.rot = glm::vec3(0.0f);
@@ -213,7 +213,7 @@ void CustomPipeInit(DeviceInfo &di)
   VkDescriptorSetLayout* dLayoutLine = g_LinePipeline.GetDescLayoutData();
   g_Grid.CreateDescriptorSet(di, dPoolLine, dLayoutLine, g_Grid.GetUBOInfo(), imgInfo, false);
   g_LinePipeline.CreatePipelineCache(di);
-  g_Grid.vCount = g_GridLinedata.size() / 2;
+  g_Grid.vCount = uint32_t(g_GridLinedata.size()) / 2;
 
   // dont like how this is set up & sent to pipeline creation
   // doesn't need to be per model

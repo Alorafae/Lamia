@@ -125,7 +125,7 @@ typedef struct {
   std::vector<VkExtensionProperties> extensions;
 } layer_properties;
 
-struct DeviceInfo
+typedef struct DeviceInfo
 {
   HINSTANCE connection;        // hInstance - Windows Instance
   wchar_t name[MAX_APP_NAME_LEN]; // Name to put on the window/icon
@@ -198,7 +198,7 @@ struct DeviceInfo
 
   uint32_t current_buffer;
   uint32_t queue_family_count;
-};
+} VulkanInfo;
 
 void LamiaMain(DeviceInfo &info);
 

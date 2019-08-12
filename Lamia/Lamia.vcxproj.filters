@@ -54,6 +54,12 @@
     <ClCompile Include="src\Systems\LamiaFile.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="src\Systems\LamiaGraphics.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\LamiaInput.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\vulkan\vk_icd.h">
@@ -102,6 +108,12 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Systems\LamiaFile.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\LamiaGraphics.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\LamiaInput.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

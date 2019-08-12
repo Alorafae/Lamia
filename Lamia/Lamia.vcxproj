@@ -137,6 +137,8 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Systems\LamiaFile.cpp" />
+    <ClCompile Include="src\Systems\LamiaGraphics.cpp" />
+    <ClCompile Include="src\Systems\LamiaInput.cpp" />
     <ClCompile Include="src\Systems\Systems.cpp" />
     <ClCompile Include="src\Window\LamiaWindow.cpp" />
   </ItemGroup>
@@ -155,6 +157,8 @@
     <ClInclude Include="src\Graphics\Pipeline.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Systems\LamiaFile.h" />
+    <ClInclude Include="src\Systems\LamiaGraphics.h" />
+    <ClInclude Include="src\Systems\LamiaInput.h" />
     <ClInclude Include="src\Systems\Systems.h" />
     <ClInclude Include="src\Window\LamiaWindow.h" />
   </ItemGroup>
