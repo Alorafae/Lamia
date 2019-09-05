@@ -12,7 +12,7 @@ int main(void)
 
   LamiaSystems::LamiaSystemsInit();
 
-  PHYSFS_init(NULL);
+  //PHYSFS_init(NULL);
 
   DeviceInfo VK_Engine = {};
 

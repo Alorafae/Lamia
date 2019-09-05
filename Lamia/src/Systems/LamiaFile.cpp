@@ -1,5 +1,6 @@
 
 #include "LamiaFile.h"
+#include "Systems.h"
 
 static LamiaFile* g_LamiaFile;
 
@@ -19,6 +20,7 @@ const char * LamiaFile::GetFileData(const char * filename)
 bool LamiaFileInit(void)
 {
   g_LamiaFile = new LamiaFile;
+  PHYSFS_init(NULL);
 
   return false;
 }
