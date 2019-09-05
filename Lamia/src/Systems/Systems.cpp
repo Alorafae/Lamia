@@ -1,9 +1,11 @@
 
 #include "Systems.h"
 
+using namespace LamiaSystems;
+
 static Systems* g_LamiaSystem;
 
-bool LamiaSystemsInit(void)
+bool LamiaSystems::LamiaSystemsInit(void)
 {
   // initialize the system itself
   g_LamiaSystem = new Systems();
@@ -15,12 +17,12 @@ bool LamiaSystemsInit(void)
   return false;
 }
 
-bool LamiaSystemsShutdown(void)
+bool LamiaSystems::LamiaSystemsShutdown(void)
 {
   return false;
 }
 
-Systems* const LamiaSystem(void)
+Systems* const LamiaSystems::LamiaSystem(void)
 {
   return g_LamiaSystem;
 }

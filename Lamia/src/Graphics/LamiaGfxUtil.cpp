@@ -110,7 +110,7 @@ void CustomPipeInit(DeviceInfo &di)
 {
   // intended way of using the systems
   // not sure if i want to add it to a namespace
-  const char* filedata = LamiaSystem()->FileSystem()->GetFileData("test");
+  const char* filedata = LamiaSystems::LamiaSystem()->FileSystem()->GetFileData("test");
 
 
   // init our camera

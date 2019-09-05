@@ -4,8 +4,11 @@
 #include "LamiaGraphics.h"
 #include "LamiaInput.h"
 
-class Systems
+namespace LamiaSystems
 {
+
+  class Systems
+  {
   public:
     Systems();
     ~Systems();
@@ -21,10 +24,11 @@ class Systems
     // graphics system
     LamiaGraphics* vi = NULL;
     // physics system
-};
+  };
 
-bool LamiaSystemsInit(void);
-bool LamiaSystemsShutdown(void);
+  bool LamiaSystemsInit(void);
+  bool LamiaSystemsShutdown(void);
 
-Systems* const LamiaSystem(void);
+  Systems* const LamiaSystem(void);
 
+}

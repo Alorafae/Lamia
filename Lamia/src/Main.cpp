@@ -10,7 +10,7 @@ int main(void)
   // physfs, vulkan, messaging, etc
   // that components will have access to 
 
-  LamiaSystemsInit();
+  LamiaSystems::LamiaSystemsInit();
 
   PHYSFS_init(NULL);
 

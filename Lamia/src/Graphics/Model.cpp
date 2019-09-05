@@ -4,7 +4,7 @@
 
 Model::Model()
 {
-  LamiaSystem();
+  LamiaSystems::LamiaSystem();
 }
 
 Model::~Model()
