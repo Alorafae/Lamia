@@ -5,21 +5,24 @@ using namespace LamiaSystems;
 
 static Systems* g_LamiaSystem;
 
-bool LamiaSystems::LamiaSystemsInit(void)
+LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
 {
   // initialize the system itself
   g_LamiaSystem = new Systems();
 
   // initialize our sub systems file, audio, graphics, etc
-  LamiaFileInit();
+  bool ret = LamiaFileInit();
+  if (ret == false)
+    return LAMIA_E_AUDIO_SYS;
 
 
-  return false;
+
+  return LAMIA_E_SUCCESS;
 }
 
-bool LamiaSystems::LamiaSystemsShutdown(void)
+LAMIA_RESULT LamiaSystems::LamiaSystemsShutdown(void)
 {
-  return false;
+  return LAMIA_E_SUCCESS;
 }
 
 Systems* const LamiaSystems::LamiaSystem(void)

@@ -20,7 +20,11 @@ const char * LamiaFile::GetFileData(const char * filename)
 bool LamiaFileInit(void)
 {
   g_LamiaFile = new LamiaFile;
-  PHYSFS_init(NULL);
+  int ret = PHYSFS_init(NULL);
 
-  return false;
+  // physfs error handling
+
+
+  // things are fine return
+  return (bool)ret;
 }

@@ -4,6 +4,14 @@
 #include "LamiaGraphics.h"
 #include "LamiaInput.h"
 
+enum LAMIA_RESULT
+{
+  LAMIA_E_SUCCESS = 10000,
+  LAMIA_E_FILE_SYS,
+  LAMIA_E_AUDIO_SYS
+};
+
+
 namespace LamiaSystems
 {
 
@@ -26,8 +34,8 @@ namespace LamiaSystems
     // physics system
   };
 
-  bool LamiaSystemsInit(void);
-  bool LamiaSystemsShutdown(void);
+  LAMIA_RESULT LamiaSystemsInit(void);
+  LAMIA_RESULT LamiaSystemsShutdown(void);
 
   Systems* const LamiaSystem(void);
 
