@@ -4,6 +4,7 @@
 
 // make sure to link vulkan-1.lib to the project
 
+// add argv0 for cross platform and pass it to systems for PHYSFS
 int main(void)
 {
   // need to make a "system" that holds the
