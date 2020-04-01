@@ -8,7 +8,7 @@ static Systems* g_LamiaSystem;
 LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
 {
   // initialize the system itself
-  g_LamiaSystem = new Systems();
+  g_LamiaSystem = new Systems;
 
   // initialize our sub systems file, audio, graphics, etc
   bool ret = LamiaFileInit();
@@ -22,6 +22,8 @@ LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
 
 LAMIA_RESULT LamiaSystems::LamiaSystemsShutdown(void)
 {
+  delete g_LamiaSystem;
+
   return LAMIA_E_SUCCESS;
 }
 

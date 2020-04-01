@@ -23,6 +23,7 @@ namespace LamiaSystems
 
     LamiaFile* const FileSystem(void);
   private:
+    // these are currently unused
     // file system
     LamiaFile* lf = NULL;
     // audio system

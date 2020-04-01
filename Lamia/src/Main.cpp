@@ -36,5 +36,7 @@ int main(void)
   
   VK_Shutdown_Sequence(VK_Engine);
 
+  SYS_OK = LamiaSystems::LamiaSystemsShutdown();
+
   return 0;
 }
