@@ -28,6 +28,12 @@ bool LamiaFileInit(void)
   // physfs error handling
 
 
+  // set up physfs
+  const char* baseDir = PHYSFS_getBaseDir();
+
+  ret = PHYSFS_setWriteDir(baseDir);
+
+  const char* writeDir = PHYSFS_getWriteDir();
   // things are fine return
   return (bool)ret;
 }
