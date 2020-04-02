@@ -14,10 +14,21 @@ LamiaFile::~LamiaFile()
 
 const char * LamiaFile::GetFileData(const char * filename)
 {
+  PHYSFS_file *file = PHYSFS_openRead(filename);
 
+  if (file == NULL)
+    return NULL;
 
+  PHYSFS_Stat *fstats = new PHYSFS_Stat;
+  PHYSFS_stat(filename, fstats);
+  fstats->filesize;
 
-  return nullptr;
+  char* fbuffer = new char[fstats->filesize]; // needs to be tracked and deleted
+  memset(fbuffer, 0, fstats->filesize);
+
+  PHYSFS_readBytes(file, fbuffer, fstats->filesize);
+
+  return fbuffer;
 }
 
 bool LamiaFileInit(void)
@@ -32,6 +43,7 @@ bool LamiaFileInit(void)
   const char* baseDir = PHYSFS_getBaseDir();
 
   ret = PHYSFS_setWriteDir(baseDir);
+  ret = PHYSFS_mount(baseDir, "", 1);
 
   const char* writeDir = PHYSFS_getWriteDir();
   // things are fine return
