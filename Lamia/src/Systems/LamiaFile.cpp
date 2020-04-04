@@ -19,16 +19,25 @@ const char * LamiaFile::GetFileData(const char * filename)
   if (file == NULL)
     return NULL;
 
-  PHYSFS_Stat *fstats = new PHYSFS_Stat;
+  PHYSFS_Stat *fstats = new PHYSFS_Stat();
   PHYSFS_stat(filename, fstats);
-  fstats->filesize;
 
   char* fbuffer = new char[fstats->filesize]; // needs to be tracked and deleted
   memset(fbuffer, 0, fstats->filesize);
 
   PHYSFS_readBytes(file, fbuffer, fstats->filesize);
 
+  FileBuffer* fb = new FileBuffer();
+  fb->fbuffer_ = fbuffer;
+
+  g_LamiaFile->GetBufferMap()[filename] = fbuffer;
+
   return fbuffer;
+}
+
+std::map<std::string, char*> &LamiaFile::GetBufferMap(void)
+{
+  return buffers_;
 }
 
 bool LamiaFileInit(void)
