@@ -45,22 +45,30 @@ LAMIA_RESULT LamiaFile::ReleaseFileData(const char * filename)
   if (iter == g_LamiaFile->GetBufferMap().end())
     return LAMIA_E_FILE_NOT_FOUND;
 
-  // free the array memory
-  delete[] iter->second;
+  if (iter->second != NULL)
+  {
+    // free the array memory
+    delete[] iter->second;
+  }
+  else
+    return LAMIA_E_FILE_DBL_FREE;
 
   // remove the key from the map not needed with ReleaseAllData added
   //g_LamiaFile->GetBufferMap().erase(filename);
+  iter->second = NULL;
 
   return LAMIA_E_SUCCESS;
 }
 
 LAMIA_RESULT LamiaFile::ReleaseAllData(void)
 {
+  // iterate through each existing key
   for (auto iter = g_LamiaFile->GetBufferMap().begin(); iter != g_LamiaFile->GetBufferMap().end(); ++iter)
   {
     ReleaseFileData(iter->first.c_str());
   }
 
+  // clear the whole map
   g_LamiaFile->GetBufferMap().clear();
 
   return LAMIA_E_SUCCESS;
