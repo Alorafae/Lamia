@@ -3,12 +3,8 @@
 #include "..\..\include\physfs\physfs.h"
 #include <map>
 #include <string>
-#include <vector>
 
-struct FileBuffer
-{
-  char* fbuffer_;
-};
+enum LAMIA_RESULT;
 
 class LamiaFile
 {
@@ -17,6 +13,8 @@ class LamiaFile
     ~LamiaFile();
 
     const char* GetFileData(const char* filename);
+    LAMIA_RESULT ReleaseFileData(const char* filename);
+    LAMIA_RESULT ReleaseAllData(void);
 
     std::map<std::string, char*> &GetBufferMap(void);
   private:

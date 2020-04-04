@@ -14,6 +14,10 @@ LamiaFile::~LamiaFile()
 
 const char * LamiaFile::GetFileData(const char * filename)
 {
+  // check our map if we already have it loaded so we don't read it in again
+
+
+  // open the file for reading
   PHYSFS_file *file = PHYSFS_openRead(filename);
 
   if (file == NULL)
@@ -27,16 +31,44 @@ const char * LamiaFile::GetFileData(const char * filename)
 
   PHYSFS_readBytes(file, fbuffer, fstats->filesize);
 
-  FileBuffer* fb = new FileBuffer();
-  fb->fbuffer_ = fbuffer;
-
   g_LamiaFile->GetBufferMap()[filename] = fbuffer;
 
   return fbuffer;
 }
 
+LAMIA_RESULT LamiaFile::ReleaseFileData(const char * filename)
+{
+  // find our data by key
+  auto iter = g_LamiaFile->GetBufferMap().find(filename);
+
+  // check that it exists, if end return out with error
+  if (iter == g_LamiaFile->GetBufferMap().end())
+    return LAMIA_E_FILE_NOT_FOUND;
+
+  // free the array memory
+  delete[] iter->second;
+
+  // remove the key from the map not needed with ReleaseAllData added
+  //g_LamiaFile->GetBufferMap().erase(filename);
+
+  return LAMIA_E_SUCCESS;
+}
+
+LAMIA_RESULT LamiaFile::ReleaseAllData(void)
+{
+  for (auto iter = g_LamiaFile->GetBufferMap().begin(); iter != g_LamiaFile->GetBufferMap().end(); ++iter)
+  {
+    ReleaseFileData(iter->first.c_str());
+  }
+
+  g_LamiaFile->GetBufferMap().clear();
+
+  return LAMIA_E_SUCCESS;
+}
+
 std::map<std::string, char*> &LamiaFile::GetBufferMap(void)
 {
+  // return a reference to our map of buffers
   return buffers_;
 }
 

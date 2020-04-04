@@ -112,6 +112,9 @@ void CustomPipeInit(DeviceInfo &di)
   // not sure if i want to add it to a namespace
   const char* filedata = LamiaSystems::LamiaSystem()->FileSystem()->GetFileData("test.txt");
 
+  LAMIA_RESULT lr = LamiaSystems::LamiaSystem()->FileSystem()->ReleaseFileData("tes.txt");
+
+  lr = LamiaSystems::LamiaSystem()->FileSystem()->ReleaseAllData();
 
   // init our camera
   g_Camera.cPos = glm::vec3(-5, -3, -10);
