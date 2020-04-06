@@ -24,8 +24,10 @@ namespace LamiaSystems
     ~Systems();
 
     LamiaFile* const FileSystem(void);
+
+    void SetFileSystemPtr(LamiaFile* fileSys);
   private:
-    // these are currently unused but also used
+    // now used correctly
     // file system
     LamiaFile* lf = NULL;
     // audio system

@@ -99,3 +99,8 @@ bool LamiaFileInit(void)
   // things are fine return
   return (bool)ret;
 }
+
+LamiaFile * LamiaFileGetSystem(void)
+{
+  return g_LamiaFile;
+}

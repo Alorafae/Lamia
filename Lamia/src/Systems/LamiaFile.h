@@ -22,3 +22,4 @@ class LamiaFile
 };
 
 bool LamiaFileInit(void);
+LamiaFile* LamiaFileGetSystem(void);

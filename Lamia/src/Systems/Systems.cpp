@@ -15,7 +15,8 @@ LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
   if (ret == false)
     return LAMIA_E_AUDIO_SYS;
 
-
+  // this is setting our file system pointer lf in g_LamiaSystem
+  g_LamiaSystem->SetFileSystemPtr(LamiaFileGetSystem());
 
   return LAMIA_E_SUCCESS;
 }
@@ -42,5 +43,10 @@ Systems::~Systems()
 
 LamiaFile* const Systems::FileSystem(void)
 {
-  return lf; // this is always null lol
+  return lf; // this is always null for now
+}
+
+void LamiaSystems::Systems::SetFileSystemPtr(LamiaFile * fileSys)
+{
+  lf = fileSys;
 }

@@ -116,7 +116,7 @@ void CustomPipeInit(DeviceInfo &di)
 
   lr = LamiaSystems::LamiaSystem()->FileSystem()->ReleaseAllData();
 
-  // intentionally null because it shouldn't be used this way
+  // fixed so this actually works and isn't null
   LamiaFile* lf = LamiaSystems::LamiaSystem()->FileSystem();
 
   // init our camera
