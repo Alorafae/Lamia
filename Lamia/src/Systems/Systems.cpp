@@ -43,7 +43,7 @@ Systems::~Systems()
 
 LamiaFile* const Systems::FileSystem(void)
 {
-  return lf; // this is always null for now
+  return lf; // should no longer be null anymore
 }
 
 void LamiaSystems::Systems::SetFileSystemPtr(LamiaFile * fileSys)
