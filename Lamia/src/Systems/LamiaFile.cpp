@@ -83,6 +83,7 @@ std::map<std::string, char*> &LamiaFile::GetBufferMap(void)
 bool LamiaFileInit(void)
 {
   g_LamiaFile = new LamiaFile;
+
   int ret = PHYSFS_init(NULL);
 
   // physfs error handling

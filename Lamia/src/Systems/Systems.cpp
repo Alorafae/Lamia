@@ -42,5 +42,5 @@ Systems::~Systems()
 
 LamiaFile* const Systems::FileSystem(void)
 {
-  return lf;
+  return lf; // this is always null lol
 }

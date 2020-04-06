@@ -116,6 +116,9 @@ void CustomPipeInit(DeviceInfo &di)
 
   lr = LamiaSystems::LamiaSystem()->FileSystem()->ReleaseAllData();
 
+  // intentionally null because it shouldn't be used this way
+  LamiaFile* lf = LamiaSystems::LamiaSystem()->FileSystem();
+
   // init our camera
   g_Camera.cPos = glm::vec3(-5, -3, -10);
   g_Camera.SetView();
