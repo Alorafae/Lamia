@@ -27,6 +27,8 @@ namespace LamiaSystems
 
     void SetFileSystemPtr(LamiaFile* fileSys);
   private:
+    // need to make sure all of these do get set when implemented to prevent undefined behavior
+    // even though it might work everytime with them null during indirect calls
     // now used correctly
     // file system
     LamiaFile* lf = NULL;
