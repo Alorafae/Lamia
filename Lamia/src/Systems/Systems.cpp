@@ -18,6 +18,11 @@ LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
   // this is setting our file system pointer lf in g_LamiaSystem
   g_LamiaSystem->SetFileSystemPtr(LamiaFileGetSystem());
 
+  //-- end audio
+
+  ret = LamiaInputInit();
+
+
   return LAMIA_E_SUCCESS;
 }
 
