@@ -1,5 +1,6 @@
 
 #include "LamiaWindow.h"
+#include "..\Systems\Systems.h"
 
 // MS-Windows event handling function:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -22,6 +23,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return 0;
   case WM_KEYDOWN:
     LamiaInput_KEYDOWN(wParam);
+    return 0;
+  case WM_INPUT:
+    LamiaSystems::LamiaSystem()->InputSystem()->ReadInputUnbuffered(lParam);
     return 0;
   default:
     break;

@@ -82,7 +82,7 @@ std::map<std::string, char*> &LamiaFile::GetBufferMap(void)
 
 bool LamiaFileInit(void)
 {
-  g_LamiaFile = new LamiaFile;
+  g_LamiaFile = new LamiaFile();
 
   int ret = PHYSFS_init(NULL);
 

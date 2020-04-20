@@ -21,7 +21,8 @@ LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
   //-- end audio
 
   ret = LamiaInputInit();
-
+  if (ret == false)
+    return LAMIA_E_INPUT_SYS;
 
   return LAMIA_E_SUCCESS;
 }
@@ -48,10 +49,20 @@ Systems::~Systems()
 
 LamiaFile* const Systems::FileSystem(void)
 {
-  return lf; // should no longer be null anymore
+  return LFileSys; // should no longer be null anymore
+}
+
+LamiaInput * const LamiaSystems::Systems::InputSystem(void)
+{
+  return LInputSys;
 }
 
 void LamiaSystems::Systems::SetFileSystemPtr(LamiaFile * fileSys)
 {
-  lf = fileSys;
+  LFileSys = fileSys;
+}
+
+void LamiaSystems::Systems::SetInputSystemPtr(LamiaInput * inputSys)
+{
+  LInputSys = inputSys;
 }

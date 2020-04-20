@@ -10,7 +10,8 @@ enum LAMIA_RESULT
   LAMIA_E_FILE_SYS,
   LAMIA_E_FILE_NOT_FOUND,
   LAMIA_E_FILE_DBL_FREE,
-  LAMIA_E_AUDIO_SYS
+  LAMIA_E_AUDIO_SYS,
+  LAMIA_E_INPUT_SYS
 };
 
 
@@ -24,20 +25,22 @@ namespace LamiaSystems
     ~Systems();
 
     LamiaFile* const FileSystem(void);
+    LamiaInput* const InputSystem(void);
 
     void SetFileSystemPtr(LamiaFile* fileSys);
+    void SetInputSystemPtr(LamiaInput* inputSys);
   private:
     // need to make sure all of these do get set when implemented to prevent undefined behavior
     // even though it might work everytime with them null during indirect calls
     // now used correctly
     // file system
-    LamiaFile* lf = NULL;
+    LamiaFile* LFileSys = NULL;
     // audio system
 
     // raw input system
-    LamiaInput* li = NULL;
+    LamiaInput* LInputSys = NULL;
     // graphics system
-    LamiaGraphics* vi = NULL;
+    LamiaGraphics* LVulkanSys = NULL;
     // physics system
   };
 

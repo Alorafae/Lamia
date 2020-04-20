@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include <Windows.h> // need this included in less files which is part of sorting out the whole window situation
 
 class LamiaInput
 {
@@ -8,7 +8,7 @@ class LamiaInput
     LamiaInput();
     ~LamiaInput();
 
-    void ReadInputUnbuffered();
+    void ReadInputUnbuffered(LPARAM lParam);
     void ReadInputBuffered();
   private:
 
