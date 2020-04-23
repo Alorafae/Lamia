@@ -69,6 +69,11 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     OutputDebugString(szTempOutput);
   }
 
+  // works :)
+  if (raw->data.keyboard.VKey == VK_ESCAPE)
+    if (raw->data.keyboard.Flags == RI_KEY_MAKE)
+      PostQuitMessage(0);
+
   delete[] lpb;
   return;
 }
