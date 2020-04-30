@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <strsafe.h>
 
+#include "..\Graphics\LamiaGfxUtil.h"
+
 static LamiaInput* g_LamiaInput;
 
 
@@ -13,6 +15,11 @@ LamiaInput::LamiaInput()
 
 LamiaInput::~LamiaInput()
 {
+}
+
+void LamiaInput::Update(float dt)
+{
+
 }
 
 void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
@@ -73,6 +80,8 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
   if (raw->data.keyboard.VKey == VK_ESCAPE)
     if (raw->data.keyboard.Flags == RI_KEY_MAKE)
       PostQuitMessage(0);
+
+  ProcessInputMessage(raw->data.keyboard.VKey);
 
   delete[] lpb;
   return;

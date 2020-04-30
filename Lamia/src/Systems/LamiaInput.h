@@ -8,6 +8,8 @@ class LamiaInput
     LamiaInput();
     ~LamiaInput();
 
+    void Update(float dt);
+
     void ReadInputUnbuffered(LPARAM lParam);
     void ReadInputBuffered();
   private:

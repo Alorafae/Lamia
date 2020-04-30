@@ -1,6 +1,7 @@
 
 #include "LamiaWindow.h"
 #include "..\Systems\Systems.h"
+#include "..\Graphics\LamiaGfxUtil.h"
 
 // MS-Windows event handling function:
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -22,7 +23,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     LamiaMain(*info); // game main loop
     return 0;
   case WM_KEYDOWN:
-    LamiaInput_KEYDOWN(wParam);
+    //LamiaInput_KEYDOWN(wParam);
     return 0;
   case WM_INPUT:
     LamiaSystems::LamiaSystem()->InputSystem()->ReadInputUnbuffered(lParam);
