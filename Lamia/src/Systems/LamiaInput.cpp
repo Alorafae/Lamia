@@ -19,7 +19,8 @@ LamiaInput::~LamiaInput()
 
 void LamiaInput::Update(float dt)
 {
-
+  // access to HWND needed I think
+  //PeekMessageA();
 }
 
 void LamiaInput::ReadInputUnbuffered(LPARAM lParam)

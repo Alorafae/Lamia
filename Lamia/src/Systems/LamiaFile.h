@@ -21,5 +21,5 @@ class LamiaFile
     std::map<std::string, char*> buffers_;
 };
 
-bool LamiaFileInit(void);
+bool LamiaFileInit(void); // may become constructors in the future
 LamiaFile* LamiaFileGetSystem(void);
