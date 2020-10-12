@@ -1,5 +1,6 @@
 
 #include "LamiaWindow.h"
+#include "..\..\LamiaMain.h"
 #include "..\Systems\Systems.h"
 #include "..\Graphics\LamiaGfxUtil.h"
 
@@ -20,7 +21,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     PostQuitMessage(0);
     return 0;
   case WM_PAINT:
-    LamiaMain(*info); // game main loop
+    LamiaMain(*info, 0.0167777);
+    LamiaPaint(*info); // game main loop
     return 0;
   case WM_KEYDOWN:
     //LamiaInput_KEYDOWN(wParam);

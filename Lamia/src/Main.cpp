@@ -33,8 +33,6 @@ int main(void)
   {
     TranslateMessage(&msg);
     DispatchMessage(&msg);
-
-    LamiaMain(0.016777);
   }
   
   VK_Shutdown_Sequence(VK_Engine);

@@ -200,7 +200,7 @@ typedef struct DeviceInfo
   uint32_t queue_family_count;
 } VulkanInfo;
 
-void LamiaMain(DeviceInfo &info);
+void LamiaPaint(DeviceInfo &info);
 
 void ProcessInputMessage(WPARAM wParam);
 

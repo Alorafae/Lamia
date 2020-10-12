@@ -1,3 +1,6 @@
+
 #pragma once
 
-bool LamiaMain(float dt);
+#include "src/Systems/Systems.h"
+
+bool LamiaMain(DeviceInfo &info, float dt);

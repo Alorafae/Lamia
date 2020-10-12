@@ -11,25 +11,31 @@ static LamiaInput* g_LamiaInput;
 
 LamiaInput::LamiaInput()
 {
+  this->keyStateRAW = new RAWINPUT;
+  this->mouseStateRAW = new RAWINPUT;
 }
 
 LamiaInput::~LamiaInput()
 {
 }
 
-void LamiaInput::Update(float dt)
+void LamiaInput::Update(float dt, MSG &msg)
 {
   // access to HWND needed I think
   //PeekMessageA();
-  HWND hWnd = NULL;
-  LPMSG lpMsg =  NULL;
-  UINT filterMin = WM_KEYFIRST;
-  UINT filterMax = WM_KEYLAST;
-
-  struct DeviceInfo *info = reinterpret_cast<struct DeviceInfo *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
   // if this returns 0, no messages to process
-  PeekMessageA(lpMsg, hWnd, filterMin, filterMax, PM_QS_INPUT);
+  //PeekMessageA(lpMsg, hWnd, filterMin, filterMax, PM_QS_INPUT);
+
+  //ReadInputUnbuffered(msg.lParam);
+
+
+  //get the keyboard state on a WM_INPUT event with ReadInputUnbuffered
+  //record it for next frame in LamiaInput
+  //reuse that keyboard state until the next WM_INPUT event message
+
+  if (!keyStateRAW->data.keyboard.Flags)
+    ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
 }
 
 void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
@@ -51,7 +57,7 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     OutputDebugString(TEXT("GetRawInputData does not return correct size !\n"));
 
   RAWINPUT* raw = (RAWINPUT*)lpb;
-
+  
   if (raw->header.dwType == RIM_TYPEKEYBOARD)
   {
     hResult = StringCchPrintf(szTempOutput, STRSAFE_MAX_CCH, TEXT(" Kbd: make=%04x Flags:%04x Reserved:%04x ExtraInformation:%08x, msg=%04x VK=%04x \n"),
@@ -61,6 +67,10 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
       raw->data.keyboard.ExtraInformation,
       raw->data.keyboard.Message,
       raw->data.keyboard.VKey);
+
+    // saving the keyboard state
+    memcpy(keyStateRAW, raw, sizeof(RAWINPUT));
+
     if (FAILED(hResult))
     {
       // TODO: write error handler
@@ -91,7 +101,11 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     if (raw->data.keyboard.Flags == RI_KEY_MAKE)
       PostQuitMessage(0);
 
-  ProcessInputMessage(raw->data.keyboard.VKey);
+  //if (raw->data.keyboard.VKey == 0x57)
+    //if (raw->data.keyboard.Flags == 0)
+      //ProcessInputMessage(raw->data.keyboard.VKey);
+  
+  //ProcessInputMessage(raw->data.keyboard.VKey);
 
   delete[] lpb;
   return;
@@ -125,7 +139,6 @@ bool LamiaInputInit(void)
     // need to find header file function is in
     return false;
   }
-
 
   return true;
 }

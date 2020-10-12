@@ -24,6 +24,8 @@ LAMIA_RESULT LamiaSystems::LamiaSystemsInit(void)
   if (ret == false)
     return LAMIA_E_INPUT_SYS;
 
+  g_LamiaSystem->SetInputSystemPtr(LamiaInputGetSystem());
+
   return LAMIA_E_SUCCESS;
 }
 

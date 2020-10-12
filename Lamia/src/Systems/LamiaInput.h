@@ -8,12 +8,13 @@ class LamiaInput
     LamiaInput();
     ~LamiaInput();
 
-    void Update(float dt);
+    void Update(float dt, MSG &msg);
 
     void ReadInputUnbuffered(LPARAM lParam);
     void ReadInputBuffered();
   private:
-
+    RAWINPUT* keyStateRAW = NULL;
+    RAWINPUT* mouseStateRAW = NULL;
 };
 
 bool LamiaInputInit(void);
