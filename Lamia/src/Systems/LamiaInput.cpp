@@ -6,6 +6,9 @@
 
 #include "..\Graphics\LamiaGfxUtil.h"
 
+// i really should not have to typedef this when a windows macro uses it
+typedef unsigned __int64 QWORD;
+
 static LamiaInput* g_LamiaInput;
 
 
@@ -67,15 +70,15 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
       raw->data.keyboard.ExtraInformation,
       raw->data.keyboard.Message,
       raw->data.keyboard.VKey);
-
-    // saving the keyboard state
-    memcpy(keyStateRAW, raw, sizeof(RAWINPUT));
-
+    
     if (FAILED(hResult))
     {
       // TODO: write error handler
     }
     OutputDebugString(szTempOutput);
+
+    // saving the keyboard state
+    memcpy(keyStateRAW, raw, sizeof(RAWINPUT));
   }
   else if (raw->header.dwType == RIM_TYPEMOUSE)
   {
@@ -104,8 +107,6 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
   //if (raw->data.keyboard.VKey == 0x57)
     //if (raw->data.keyboard.Flags == 0)
       //ProcessInputMessage(raw->data.keyboard.VKey);
-  
-  //ProcessInputMessage(raw->data.keyboard.VKey);
 
   delete[] lpb;
   return;
@@ -114,6 +115,55 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
 void LamiaInput::ReadInputBuffered()
 {
   printf("Read Input Buffered Called\n");
+
+  UINT cbSize;
+  //Sleep(1000);
+
+  //VERIFY(GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER)) == 0);
+
+  GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER));
+  cbSize *= 16;            // this is a wild guess
+
+  //Log(_T("Allocating %d bytes"), cbSize);
+
+  PRAWINPUT pRawInput = (PRAWINPUT)malloc(cbSize);
+  if (pRawInput == NULL)
+  {
+    //Log(_T("Not enough memory"));
+    return;
+  }
+  for (;;)
+  {
+    UINT cbSizeT = cbSize;
+    UINT nInput = GetRawInputBuffer(pRawInput, &cbSizeT, /*0,
+                  */sizeof(RAWINPUTHEADER));
+    //Log(_T("nInput = %d"), nInput);
+    if (nInput == 0)
+    {
+      break;
+    }
+    //ASSERT(nInput > 0);
+    PRAWINPUT* paRawInput = (PRAWINPUT*)malloc(sizeof(PRAWINPUT) * nInput);
+
+    if (paRawInput == NULL)
+    {
+      //Log(_T("paRawInput NULL"));
+      break;
+    }
+
+    PRAWINPUT pri = pRawInput;
+    for (UINT i = 0; i < nInput; ++i)
+    {
+      //Log(_T(" input[%d] = @%p"), i, pri);
+      paRawInput[i] = pri;
+      pri = NEXTRAWINPUTBLOCK(pri);
+    }
+    // to clean the buffer
+    DefRawInputProc(paRawInput, nInput, sizeof(RAWINPUTHEADER));
+
+    free(paRawInput);
+  }
+  free(pRawInput);
 }
 
 bool LamiaInputInit(void)

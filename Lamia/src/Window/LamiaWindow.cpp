@@ -25,11 +25,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     LamiaPaint(*info); // game main loop
     return 0;
   case WM_KEYDOWN:
-    //LamiaInput_KEYDOWN(wParam);
-    return 0;
+  case WM_KEYUP:
+  case WM_SYSKEYDOWN:
+  case WM_SYSKEYUP:
   case WM_INPUT:
     LamiaSystems::LamiaSystem()->InputSystem()->ReadInputUnbuffered(lParam);
+    LamiaSystems::LamiaSystem()->InputSystem()->ReadInputBuffered();
     return 0;
+  //case MSG_GETRIUFFER:
+
   default:
     break;
   }

@@ -300,7 +300,7 @@ void LamiaPaint(DeviceInfo &info)
 // this all needs to be raw input later on, this is temporary
 void ProcessInputMessage(WPARAM wParam)
 {
-  
+  /*
   switch (wParam)
   {
     case 0x57:  // W key, forward
@@ -319,8 +319,8 @@ void ProcessInputMessage(WPARAM wParam)
       g_Camera.cPos.z -= 3.0f * FRAME_TIME;
       break;
   }
+  */
   
-  /*
   if (wParam == 0x57)
     g_Camera.cPos.z += 3.0f * FRAME_TIME;
   if (wParam == 0x44)
@@ -328,10 +328,10 @@ void ProcessInputMessage(WPARAM wParam)
   if (wParam == 0x41)
     g_Camera.cPos.x -= 3.0f * FRAME_TIME;
   if (wParam == VK_SPACE)
-    g_Camera.cPos.y += 3.0f * FRAME_TIME;
+    g_Camera.cPos.y -= 3.0f * FRAME_TIME;
   if (wParam == 0x53)
     g_Camera.cPos.z -= 3.0f * FRAME_TIME;
-    */
+    
 }
 
 
