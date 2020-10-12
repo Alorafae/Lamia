@@ -1,6 +1,7 @@
 
 #include "..\src\Graphics\LamiaGfxUtil.h"
 #include "..\src\Systems\Systems.h"
+#include "..\LamiaMain.h"
 
 // make sure to link vulkan-1.lib to the project
 
@@ -32,6 +33,8 @@ int main(void)
   {
     TranslateMessage(&msg);
     DispatchMessage(&msg);
+
+    LamiaMain(0.016777);
   }
   
   VK_Shutdown_Sequence(VK_Engine);

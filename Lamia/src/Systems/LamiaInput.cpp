@@ -21,6 +21,15 @@ void LamiaInput::Update(float dt)
 {
   // access to HWND needed I think
   //PeekMessageA();
+  HWND hWnd = NULL;
+  LPMSG lpMsg =  NULL;
+  UINT filterMin = WM_KEYFIRST;
+  UINT filterMax = WM_KEYLAST;
+
+  struct DeviceInfo *info = reinterpret_cast<struct DeviceInfo *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+
+  // if this returns 0, no messages to process
+  PeekMessageA(lpMsg, hWnd, filterMin, filterMax, PM_QS_INPUT);
 }
 
 void LamiaInput::ReadInputUnbuffered(LPARAM lParam)

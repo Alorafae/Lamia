@@ -60,6 +60,9 @@
     <ClCompile Include="src\Systems\LamiaInput.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="LamiaMain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\vulkan\vk_icd.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="src\Systems\LamiaInput.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="LamiaMain.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
