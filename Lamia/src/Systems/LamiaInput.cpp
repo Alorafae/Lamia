@@ -41,6 +41,7 @@ void LamiaInput::Update(float dt, MSG &msg)
     ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
 }
 
+// pulled from MSDN so it might break later
 void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
 {
   
@@ -112,6 +113,7 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
   return;
 }
 
+// pulled from MSDN so it might break later
 void LamiaInput::ReadInputBuffered()
 {
   printf("Read Input Buffered Called\n");
@@ -135,8 +137,8 @@ void LamiaInput::ReadInputBuffered()
   for (;;)
   {
     UINT cbSizeT = cbSize;
-    UINT nInput = GetRawInputBuffer(pRawInput, &cbSizeT, /*0,
-                  */sizeof(RAWINPUTHEADER));
+    UINT nInput = GetRawInputBuffer(pRawInput, &cbSizeT, /*0, */sizeof(RAWINPUTHEADER));
+
     //Log(_T("nInput = %d"), nInput);
     if (nInput == 0)
     {
@@ -156,6 +158,9 @@ void LamiaInput::ReadInputBuffered()
     {
       //Log(_T(" input[%d] = @%p"), i, pri);
       paRawInput[i] = pri;
+
+      // record vkey message and flags?
+
       pri = NEXTRAWINPUTBLOCK(pri);
     }
     // to clean the buffer
