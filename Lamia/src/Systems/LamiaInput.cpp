@@ -42,6 +42,8 @@ void LamiaInput::Update(float dt, MSG &msg)
   //if (!keyStateRAW->data.keyboard.Flags)
     //ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
 
+
+  // bugged with mouse on clicking window after it's lost focus
   //ReadInputBuffered();
 }
 
