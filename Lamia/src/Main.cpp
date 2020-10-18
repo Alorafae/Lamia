@@ -39,5 +39,7 @@ int main(void)
 
   SYS_OK = LamiaSystems::LamiaSystemsShutdown();
 
+  _CrtDumpMemoryLeaks();
+
   return 0;
 }

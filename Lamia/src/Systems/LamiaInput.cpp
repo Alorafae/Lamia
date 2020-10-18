@@ -20,6 +20,8 @@ LamiaInput::LamiaInput()
 
 LamiaInput::~LamiaInput()
 {
+  delete this->keyStateRAW;
+  delete this->mouseStateRAW;
 }
 
 void LamiaInput::Update(float dt, MSG &msg)
@@ -37,8 +39,10 @@ void LamiaInput::Update(float dt, MSG &msg)
   //record it for next frame in LamiaInput
   //reuse that keyboard state until the next WM_INPUT event message
 
-  if (!keyStateRAW->data.keyboard.Flags)
-    ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
+  //if (!keyStateRAW->data.keyboard.Flags)
+    //ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
+
+  //ReadInputBuffered();
 }
 
 // pulled from MSDN so it might break later
@@ -79,7 +83,7 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     OutputDebugString(szTempOutput);
 
     // saving the keyboard state
-    memcpy(keyStateRAW, raw, sizeof(RAWINPUT));
+    //memcpy(keyStateRAW, raw, sizeof(RAWINPUT));
   }
   else if (raw->header.dwType == RIM_TYPEMOUSE)
   {
@@ -110,6 +114,7 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
       //ProcessInputMessage(raw->data.keyboard.VKey);
 
   delete[] lpb;
+  delete[] szTempOutput;
   return;
 }
 
@@ -123,8 +128,12 @@ void LamiaInput::ReadInputBuffered()
 
   //VERIFY(GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER)) == 0);
 
-  GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER));
-  cbSize *= 16;            // this is a wild guess
+  if (GetRawInputBuffer(NULL, &cbSize, sizeof(RAWINPUTHEADER)))
+    return;
+  //cbSize *= 16;            // this is a wild guess
+
+  cbSize *= 8; // a different MSDN page says specifically to use 8
+  // so idk wtf the 16 above from the rawinput msdn examples is about
 
   //Log(_T("Allocating %d bytes"), cbSize);
 
@@ -137,7 +146,7 @@ void LamiaInput::ReadInputBuffered()
   for (;;)
   {
     UINT cbSizeT = cbSize;
-    UINT nInput = GetRawInputBuffer(pRawInput, &cbSizeT, /*0, */sizeof(RAWINPUTHEADER));
+    UINT nInput = GetRawInputBuffer(pRawInput, &cbSizeT, sizeof(RAWINPUTHEADER));
 
     //Log(_T("nInput = %d"), nInput);
     if (nInput == 0)

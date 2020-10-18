@@ -30,7 +30,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case WM_SYSKEYUP:
   case WM_INPUT:
     LamiaSystems::LamiaSystem()->InputSystem()->ReadInputUnbuffered(lParam);
-    LamiaSystems::LamiaSystem()->InputSystem()->ReadInputBuffered();
+    //LamiaSystems::LamiaSystem()->InputSystem()->ReadInputBuffered();
     return 0;
   //case MSG_GETRIUFFER:
 
