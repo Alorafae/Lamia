@@ -44,7 +44,7 @@ void LamiaInput::Update(float dt, MSG &msg)
 
 
   // bugged with mouse on clicking window after it's lost focus
-  //ReadInputBuffered();
+  ReadInputBuffered();
 }
 
 // pulled from MSDN so it might break later
@@ -126,7 +126,7 @@ void LamiaInput::ReadInputBuffered()
   printf("Read Input Buffered Called\n");
 
   UINT cbSize;
-  //Sleep(1000);
+  Sleep(10);
 
   //VERIFY(GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER)) == 0);
 
@@ -134,10 +134,15 @@ void LamiaInput::ReadInputBuffered()
     return;
   //cbSize *= 16;            // this is a wild guess
 
-  cbSize *= 8; // a different MSDN page says specifically to use 8
+  if (cbSize == 0)
+    return;
+
+  cbSize *= 16; // a different MSDN page says specifically to use 8
   // so idk wtf the 16 above from the rawinput msdn examples is about
+  // maybe 16 is for 32 bit??? idk what else, cus 8 doesn't work
 
   //Log(_T("Allocating %d bytes"), cbSize);
+  
 
   PRAWINPUT pRawInput = (PRAWINPUT)malloc(cbSize);
   if (pRawInput == NULL)
@@ -156,6 +161,8 @@ void LamiaInput::ReadInputBuffered()
       break;
     }
     //ASSERT(nInput > 0);
+
+    // nInput is hitting max uint for some reason
     PRAWINPUT* paRawInput = (PRAWINPUT*)malloc(sizeof(PRAWINPUT) * nInput);
 
     if (paRawInput == NULL)
