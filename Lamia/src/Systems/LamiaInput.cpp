@@ -43,8 +43,12 @@ void LamiaInput::Update(float dt, MSG &msg)
     //ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
 
 
-  // bugged with mouse on clicking window after it's lost focus
+  // this is where we want to read in our input
   ReadInputBuffered();
+
+  // then we want to process that input and tell the engine
+  // what it should do, eg aim, move, menu, confirm, etc.
+
 }
 
 // pulled from MSDN so it might break later
@@ -126,7 +130,7 @@ void LamiaInput::ReadInputBuffered()
   printf("Read Input Buffered Called\n");
 
   UINT cbSize;
-  Sleep(10);
+  Sleep(10); // would prefer to not have a sleep but we'll see once i get input working how i want
 
   //VERIFY(GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER)) == 0);
 
@@ -134,12 +138,17 @@ void LamiaInput::ReadInputBuffered()
     return;
   //cbSize *= 16;            // this is a wild guess
 
+  // we dont want to alloc 0 bytes and also this solves the bug that can happen
+  // if it gets further down with cbSize of 0 and then nInput becomes max uint
+  // which then tries to allocate an astronomical amount of memory and crashes the system
   if (cbSize == 0)
     return;
 
   cbSize *= 16; // a different MSDN page says specifically to use 8
   // so idk wtf the 16 above from the rawinput msdn examples is about
-  // maybe 16 is for 32 bit??? idk what else, cus 8 doesn't work
+  // maybe 16 is for 64 bit??? idk what else, cus 8 doesn't work
+
+  // for WOW64 it also needs to offset by 8
 
   //Log(_T("Allocating %d bytes"), cbSize);
   
@@ -162,7 +171,7 @@ void LamiaInput::ReadInputBuffered()
     }
     //ASSERT(nInput > 0);
 
-    // nInput is hitting max uint for some reason
+    // nInput is hitting max uint for some reason -> fixed
     PRAWINPUT* paRawInput = (PRAWINPUT*)malloc(sizeof(PRAWINPUT) * nInput);
 
     if (paRawInput == NULL)
@@ -177,7 +186,19 @@ void LamiaInput::ReadInputBuffered()
       //Log(_T(" input[%d] = @%p"), i, pri);
       paRawInput[i] = pri;
 
+      // header->dwtype -> 0 = mouse, 1 = keyboard, 2 = some other HID
       // record vkey message and flags?
+
+      if (pri->header.dwType == 1)
+      {
+        // add to kb q
+
+      }
+      else if (pri->header.dwType == 0)
+      {
+        // add to mouse q
+
+      }
 
       pri = NEXTRAWINPUTBLOCK(pri);
     }
