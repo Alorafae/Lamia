@@ -18,6 +18,16 @@ class LamiaKeyboard
     UINT pMsg = 0;
 };
 
+class LamiaInputStateMachine
+{
+  public:
+    // map skip list for active keys?
+
+  //private:
+    LamiaKeyboard keys[256];
+
+};
+
 class LamiaInput
 {
   public:
@@ -35,6 +45,8 @@ class LamiaInput
     //bool inputChanged = false;
 
     std::vector<LamiaKeyboard> kbInputQ;
+
+    LamiaInputStateMachine lism;
 };
 
 bool LamiaInputInit(void);

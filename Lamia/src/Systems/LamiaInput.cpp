@@ -196,11 +196,16 @@ void LamiaInput::ReadInputBuffered()
 
       // header->dwtype -> 0 = mouse, 1 = keyboard, 2 = some other HID
       // record vkey message and flags?
+      if (nInput > 1)
+        continue;
 
       if (pri->header.dwType == 1)
       {
         // add to kb q
         kbInputQ.push_back(LamiaKeyboard(pri->data.keyboard.VKey, pri->data.keyboard.Flags, pri->data.keyboard.Message));
+
+        if (pri->data.keyboard.VKey < 256)
+          lism.keys[pri->data.keyboard.VKey].pFlags = pri->data.keyboard.Flags;
       }
       else if (pri->header.dwType == 0)
       {
