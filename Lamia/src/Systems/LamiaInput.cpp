@@ -50,12 +50,22 @@ void LamiaInput::Update(float dt, MSG &msg)
   // what it should do, eg aim, move, menu, confirm, etc.
   // I think i want to keep the previous frames key and mouse data?
   // dont empty the queue until input changes? makes sense
-  for (auto i = kbInputQ.begin(); i != kbInputQ.end(); ++i)
+  /*for (auto i = kbInputQ.begin(); i != kbInputQ.end(); ++i)
   {
-    ProcessInputMessage(i->pKey);
-  }
+    // use the queue to update our statemachine
+    //ProcessInputMessage(i->pKey);
 
-  kbInputQ.clear();
+    if (!lism.keys[i->pKey].pFlags)
+      ProcessInputMessage(i->pKey);
+    else
+      lism.keys[i->pKey].pFlags;
+  }*/
+
+  for (unsigned i = 0; i < 256; ++i)
+  {
+    if (lism.keys[i].pFlags)
+      ProcessInputMessage(i);
+  }
 }
 
 // pulled from MSDN so it might break later
@@ -196,16 +206,16 @@ void LamiaInput::ReadInputBuffered()
 
       // header->dwtype -> 0 = mouse, 1 = keyboard, 2 = some other HID
       // record vkey message and flags?
-      if (nInput > 1)
-        continue;
+      //if (nInput > 1)
+        //continue;
 
       if (pri->header.dwType == 1)
       {
         // add to kb q
-        kbInputQ.push_back(LamiaKeyboard(pri->data.keyboard.VKey, pri->data.keyboard.Flags, pri->data.keyboard.Message));
+        //kbInputQ.push_back(LamiaKeyboard(pri->data.keyboard.VKey, pri->data.keyboard.Flags, pri->data.keyboard.Message));
 
         if (pri->data.keyboard.VKey < 256)
-          lism.keys[pri->data.keyboard.VKey].pFlags = pri->data.keyboard.Flags;
+          lism.keys[pri->data.keyboard.VKey].pFlags = !pri->data.keyboard.Flags;
       }
       else if (pri->header.dwType == 0)
       {
