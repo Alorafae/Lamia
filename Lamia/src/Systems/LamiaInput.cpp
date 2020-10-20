@@ -48,7 +48,14 @@ void LamiaInput::Update(float dt, MSG &msg)
 
   // then we want to process that input and tell the engine
   // what it should do, eg aim, move, menu, confirm, etc.
+  // I think i want to keep the previous frames key and mouse data?
+  // dont empty the queue until input changes? makes sense
+  for (auto i = kbInputQ.begin(); i != kbInputQ.end(); ++i)
+  {
+    ProcessInputMessage(i->pKey);
+  }
 
+  kbInputQ.clear();
 }
 
 // pulled from MSDN so it might break later
@@ -130,7 +137,7 @@ void LamiaInput::ReadInputBuffered()
   printf("Read Input Buffered Called\n");
 
   UINT cbSize;
-  Sleep(10); // would prefer to not have a sleep but we'll see once i get input working how i want
+  Sleep(50); // would prefer to not have a sleep but we'll see once i get input working how i want
 
   //VERIFY(GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER)) == 0);
 
@@ -180,6 +187,7 @@ void LamiaInput::ReadInputBuffered()
       break;
     }
 
+
     PRAWINPUT pri = pRawInput;
     for (UINT i = 0; i < nInput; ++i)
     {
@@ -192,7 +200,7 @@ void LamiaInput::ReadInputBuffered()
       if (pri->header.dwType == 1)
       {
         // add to kb q
-
+        kbInputQ.push_back(LamiaKeyboard(pri->data.keyboard.VKey, pri->data.keyboard.Flags, pri->data.keyboard.Message));
       }
       else if (pri->header.dwType == 0)
       {
@@ -202,7 +210,7 @@ void LamiaInput::ReadInputBuffered()
 
       pri = NEXTRAWINPUTBLOCK(pri);
     }
-    // to clean the buffer
+    // to clean the buffer -> MSDN says that this is not what this function does??
     DefRawInputProc(paRawInput, nInput, sizeof(RAWINPUTHEADER));
 
     free(paRawInput);
@@ -240,4 +248,16 @@ bool LamiaInputInit(void)
 LamiaInput * LamiaInputGetSystem(void)
 {
   return g_LamiaInput;
+}
+
+LamiaKeyboard::LamiaKeyboard()
+{
+}
+
+LamiaKeyboard::LamiaKeyboard(UINT key, UINT flags, UINT msg) : pKey(key), pFlags(flags), pMsg(msg)
+{
+}
+
+LamiaKeyboard::~LamiaKeyboard()
+{
 }
