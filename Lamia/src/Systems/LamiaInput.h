@@ -24,6 +24,7 @@ class LamiaInputStateMachine
     // map skip list for active keys?
 
   //private:
+    // might change this to std::bitset
     LamiaKeyboard keys[256];
 
 };

@@ -322,16 +322,20 @@ void ProcessInputMessage(WPARAM wParam)
   */
   
   if (wParam == 0x57)
-    g_Camera.cPos.z += 3.0f * FRAME_TIME;
+    g_Camera.cPos.z += 10.0f * FRAME_TIME;
   if (wParam == 0x44)
-    g_Camera.cPos.x += 3.0f * FRAME_TIME;
+    g_Camera.cPos.x += 10.0f * FRAME_TIME;
   if (wParam == 0x41)
-    g_Camera.cPos.x -= 3.0f * FRAME_TIME;
+    g_Camera.cPos.x -= 10.0f * FRAME_TIME;
   if (wParam == VK_SPACE)
-    g_Camera.cPos.y -= 3.0f * FRAME_TIME;
+    g_Camera.cPos.y -= 10.0f * FRAME_TIME;
   if (wParam == 0x53)
-    g_Camera.cPos.z -= 3.0f * FRAME_TIME;
+    g_Camera.cPos.z -= 10.0f * FRAME_TIME;
+  if (wParam == 0x43)
+    g_Camera.cPos.y += 10.0f * FRAME_TIME;
     
+  if (wParam == VK_ESCAPE)
+    PostQuitMessage(0);
 }
 
 

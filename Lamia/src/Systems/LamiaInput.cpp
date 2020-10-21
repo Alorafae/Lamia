@@ -26,43 +26,13 @@ LamiaInput::~LamiaInput()
 
 void LamiaInput::Update(float dt, MSG &msg)
 {
-  // access to HWND needed I think
-  //PeekMessageA();
-
-  // if this returns 0, no messages to process
-  //PeekMessageA(lpMsg, hWnd, filterMin, filterMax, PM_QS_INPUT);
-
-  //ReadInputUnbuffered(msg.lParam);
-
-
-  //get the keyboard state on a WM_INPUT event with ReadInputUnbuffered
-  //record it for next frame in LamiaInput
-  //reuse that keyboard state until the next WM_INPUT event message
-
-  //if (!keyStateRAW->data.keyboard.Flags)
-    //ProcessInputMessage(keyStateRAW->data.keyboard.VKey);
-
 
   // this is where we want to read in our input
-  ReadInputBuffered();
-
-  // then we want to process that input and tell the engine
-  // what it should do, eg aim, move, menu, confirm, etc.
-  // I think i want to keep the previous frames key and mouse data?
-  // dont empty the queue until input changes? makes sense
-  /*for (auto i = kbInputQ.begin(); i != kbInputQ.end(); ++i)
-  {
-    // use the queue to update our statemachine
-    //ProcessInputMessage(i->pKey);
-
-    if (!lism.keys[i->pKey].pFlags)
-      ProcessInputMessage(i->pKey);
-    else
-      lism.keys[i->pKey].pFlags;
-  }*/
+  //ReadInputBuffered();
 
   for (unsigned i = 0; i < 256; ++i)
   {
+    // if the flag is set on the key then it's being held down or was recently hit
     if (lism.keys[i].pFlags)
       ProcessInputMessage(i);
   }
@@ -136,6 +106,8 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     //if (raw->data.keyboard.Flags == 0)
       //ProcessInputMessage(raw->data.keyboard.VKey);
 
+  lism.keys[raw->data.keyboard.VKey].pFlags = !raw->data.keyboard.Flags;
+
   delete[] lpb;
   delete[] szTempOutput;
   return;
@@ -147,7 +119,10 @@ void LamiaInput::ReadInputBuffered()
   printf("Read Input Buffered Called\n");
 
   UINT cbSize;
-  Sleep(50); // would prefer to not have a sleep but we'll see once i get input working how i want
+  Sleep(25); // would prefer to not have a sleep but we'll see once i get input working how i want
+
+  // 16.6 ms 60fps
+  // 6.9 ms 144 fps
 
   //VERIFY(GetRawInputBuffer(NULL, &cbSize, /*0,*/sizeof(RAWINPUTHEADER)) == 0);
 
@@ -204,16 +179,8 @@ void LamiaInput::ReadInputBuffered()
       //Log(_T(" input[%d] = @%p"), i, pri);
       paRawInput[i] = pri;
 
-      // header->dwtype -> 0 = mouse, 1 = keyboard, 2 = some other HID
-      // record vkey message and flags?
-      //if (nInput > 1)
-        //continue;
-
       if (pri->header.dwType == 1)
       {
-        // add to kb q
-        //kbInputQ.push_back(LamiaKeyboard(pri->data.keyboard.VKey, pri->data.keyboard.Flags, pri->data.keyboard.Message));
-
         if (pri->data.keyboard.VKey < 256)
           lism.keys[pri->data.keyboard.VKey].pFlags = !pri->data.keyboard.Flags;
       }
