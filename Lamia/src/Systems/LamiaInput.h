@@ -1,7 +1,6 @@
 
 #pragma once
 #include <Windows.h> // need this included in less files which is part of sorting out the whole window situation
-#include <vector>
 // class to create and keep track of the real-time state of the keyboard
 // maybe just use an array that can hold each VK
 // i dont think ill ever want to use this but ima just leave it here for now
@@ -40,13 +39,6 @@ class LamiaInput
     void ReadInputUnbuffered(LPARAM lParam);
     void ReadInputBuffered();
   private:
-    RAWINPUT* keyStateRAW = NULL;
-    RAWINPUT* mouseStateRAW = NULL;
-
-    //bool inputChanged = false;
-
-    std::vector<LamiaKeyboard> kbInputQ;
-
     LamiaInputStateMachine lism;
 };
 

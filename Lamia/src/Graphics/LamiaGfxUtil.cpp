@@ -247,7 +247,7 @@ void CustomPipeInit(DeviceInfo &di)
 
 // above function & globals to be removed after testing
 
-void LamiaPaint(DeviceInfo &info)
+void LamiaRender(DeviceInfo &info)
 {
   g_Camera.SetView();
   glm::mat4 camMVP = g_Camera.GetMVP();
@@ -300,26 +300,6 @@ void LamiaPaint(DeviceInfo &info)
 // this all needs to be raw input later on, this is temporary
 void ProcessInputMessage(WPARAM wParam)
 {
-  /*
-  switch (wParam)
-  {
-    case 0x57:  // W key, forward
-      g_Camera.cPos.z += 3.0f * FRAME_TIME;
-      break;
-    case 0x44:  // D key, right
-      g_Camera.cPos.x += 3.0f * FRAME_TIME;
-      break;
-    case 0x41: // A key, left
-      g_Camera.cPos.x -= 3.0f * FRAME_TIME;
-      break;
-    case VK_SPACE:
-      g_Camera.cPos.y += 3.0f * FRAME_TIME;
-      break;
-    case 0x53: // S key, backwards
-      g_Camera.cPos.z -= 3.0f * FRAME_TIME;
-      break;
-  }
-  */
   
   if (wParam == 0x57)
     g_Camera.cPos.z += 10.0f * FRAME_TIME;

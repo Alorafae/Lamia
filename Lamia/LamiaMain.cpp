@@ -9,12 +9,14 @@ bool LamiaMain(DeviceInfo &info, float dt)
   UINT filterMin = WM_KEYFIRST;
   UINT filterMax = WM_KEYLAST;
 
-  // if this returns 0, no messages to process
-  //bool newMsgs = PeekMessageA(&lpMsg, hWnd, 0, 0, PM_REMOVE);
+  // input
+  LamiaSystems::LamiaSystem()->InputSystem()->Update(dt, lpMsg);
 
+  // physics
 
-  //if (newMsgs)
-    LamiaSystems::LamiaSystem()->InputSystem()->Update(dt, lpMsg);
+  // audio
+
+  // render
 
 
   return true;

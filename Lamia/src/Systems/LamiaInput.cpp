@@ -14,14 +14,10 @@ static LamiaInput* g_LamiaInput;
 
 LamiaInput::LamiaInput()
 {
-  this->keyStateRAW = new RAWINPUT;
-  this->mouseStateRAW = new RAWINPUT;
 }
 
 LamiaInput::~LamiaInput()
 {
-  delete this->keyStateRAW;
-  delete this->mouseStateRAW;
 }
 
 void LamiaInput::Update(float dt, MSG &msg)
@@ -75,8 +71,6 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     }
     OutputDebugString(szTempOutput);
 
-    // saving the keyboard state
-    //memcpy(keyStateRAW, raw, sizeof(RAWINPUT));
   }
   else if (raw->header.dwType == RIM_TYPEMOUSE)
   {
@@ -96,15 +90,6 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     }
     OutputDebugString(szTempOutput);
   }
-
-  // works :)
-  if (raw->data.keyboard.VKey == VK_ESCAPE)
-    if (raw->data.keyboard.Flags == RI_KEY_MAKE)
-      PostQuitMessage(0);
-
-  //if (raw->data.keyboard.VKey == 0x57)
-    //if (raw->data.keyboard.Flags == 0)
-      //ProcessInputMessage(raw->data.keyboard.VKey);
 
   lism.keys[raw->data.keyboard.VKey].pFlags = !raw->data.keyboard.Flags;
 

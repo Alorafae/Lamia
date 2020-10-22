@@ -22,7 +22,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return 0;
   case WM_PAINT:
     LamiaMain(*info, 0.0167777);
-    LamiaPaint(*info); // game main loop
+    LamiaRender(*info); // game main loop
     return 0;
   case WM_KEYDOWN:
   case WM_KEYUP:
@@ -30,23 +30,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case WM_SYSKEYUP:
   case WM_INPUT:
     LamiaSystems::LamiaSystem()->InputSystem()->ReadInputUnbuffered(lParam);
-    //LamiaSystems::LamiaSystem()->InputSystem()->ReadInputBuffered();
     return 0;
-  //case MSG_GETRIUFFER:
 
   default:
     break;
   }
   return (DefWindowProc(hWnd, uMsg, wParam, lParam));
-}
-
-void LamiaInput_KEYDOWN(WPARAM wParam)
-{
-  ProcessInputMessage(wParam);
-  switch (wParam)
-  {
-    case VK_ESCAPE:
-      PostQuitMessage(0);
-      break;
-  }
 }
