@@ -26,6 +26,7 @@ class LamiaInputStateMachine
     // might change this to std::bitset
     LamiaKeyboard keys[256];
 
+    // need to add mouse stuff
 };
 
 class LamiaInput

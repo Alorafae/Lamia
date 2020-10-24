@@ -21,8 +21,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     PostQuitMessage(0);
     return 0;
   case WM_PAINT:
-    LamiaMain(*info, 0.0167777);
-    LamiaRender(*info); // game main loop
+    LamiaMain(*info, 0.0167777); // will be game main loop
+    LamiaRender(*info); // game render loop
     return 0;
   case WM_KEYDOWN:
   case WM_KEYUP:

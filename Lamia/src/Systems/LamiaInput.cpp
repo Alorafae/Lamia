@@ -23,9 +23,9 @@ LamiaInput::~LamiaInput()
 void LamiaInput::Update(float dt, MSG &msg)
 {
 
-  // this is where we want to read in our input
-  //ReadInputBuffered();
+  // this is where we want to process our input
 
+  // just looping through all the keys, will change to a skippable bitset later
   for (unsigned i = 0; i < 256; ++i)
   {
     // if the flag is set on the key then it's being held down or was recently hit
@@ -34,7 +34,7 @@ void LamiaInput::Update(float dt, MSG &msg)
   }
 }
 
-// pulled from MSDN so it might break later
+// initial code from MSDN
 void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
 {
   
@@ -91,6 +91,7 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     OutputDebugString(szTempOutput);
   }
 
+  // move into keyboard section
   lism.keys[raw->data.keyboard.VKey].pFlags = !raw->data.keyboard.Flags;
 
   delete[] lpb;
@@ -98,7 +99,7 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
   return;
 }
 
-// pulled from MSDN so it might break later
+// don't use buffered for the time being
 void LamiaInput::ReadInputBuffered()
 {
   printf("Read Input Buffered Called\n");

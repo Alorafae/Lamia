@@ -247,6 +247,8 @@ void CustomPipeInit(DeviceInfo &di)
 
 // above function & globals to be removed after testing
 
+
+// this will be the main render loop
 void LamiaRender(DeviceInfo &info)
 {
   g_Camera.SetView();
@@ -300,7 +302,7 @@ void LamiaRender(DeviceInfo &info)
 // this all needs to be raw input later on, this is temporary
 void ProcessInputMessage(WPARAM wParam)
 {
-  
+  // this will be handled elsewhere obviously
   if (wParam == 0x57)
     g_Camera.cPos.z += 10.0f * FRAME_TIME;
   if (wParam == 0x44)
