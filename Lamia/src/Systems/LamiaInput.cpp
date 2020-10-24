@@ -32,6 +32,10 @@ void LamiaInput::Update(float dt, MSG &msg)
     if (lism.keys[i].pFlags)
       ProcessInputMessage(i);
   }
+
+  // process mouse input
+
+
 }
 
 // initial code from MSDN
@@ -70,7 +74,9 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
       // TODO: write error handler
     }
     OutputDebugString(szTempOutput);
-
+    
+    // add key data to kb input state machine
+    lism.keys[raw->data.keyboard.VKey].pFlags = !raw->data.keyboard.Flags;
   }
   else if (raw->header.dwType == RIM_TYPEMOUSE)
   {
@@ -90,9 +96,6 @@ void LamiaInput::ReadInputUnbuffered(LPARAM lParam)
     }
     OutputDebugString(szTempOutput);
   }
-
-  // move into keyboard section
-  lism.keys[raw->data.keyboard.VKey].pFlags = !raw->data.keyboard.Flags;
 
   delete[] lpb;
   delete[] szTempOutput;
@@ -227,5 +230,13 @@ LamiaKeyboard::LamiaKeyboard(UINT key, UINT flags, UINT msg) : pKey(key), pFlags
 }
 
 LamiaKeyboard::~LamiaKeyboard()
+{
+}
+
+LamiaMouse::LamiaMouse()
+{
+}
+
+LamiaMouse::~LamiaMouse()
 {
 }

@@ -39,6 +39,7 @@ int main(void)
 
   SYS_OK = LamiaSystems::LamiaSystemsShutdown();
 
+  // dumps the memory leaks into VS output
   _CrtDumpMemoryLeaks();
 
   return 0;

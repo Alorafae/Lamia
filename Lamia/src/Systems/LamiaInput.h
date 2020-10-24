@@ -17,6 +17,18 @@ class LamiaKeyboard
     UINT pMsg = 0;
 };
 
+class LamiaMouse
+{
+  public:
+    LamiaMouse();
+    ~LamiaMouse();
+
+
+    USHORT mButtonFlags;
+    ULONG mLastX;
+    ULONG mLastY;
+};
+
 class LamiaInputStateMachine
 {
   public:
@@ -24,6 +36,7 @@ class LamiaInputStateMachine
 
   //private:
     // might change this to std::bitset
+    // also needs to not be hard coded obviously
     LamiaKeyboard keys[256];
 
     // need to add mouse stuff
